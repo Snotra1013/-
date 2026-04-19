@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>命運的靜物詩 · Remnants of Destiny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --accent: #66a9c9;
+      --accent-dark: #4a8aab;
+      --accent-light: #a8d0e6;
+      --accent-glow: rgba(102, 169, 201, 0.35);
+
+      --bg: #f5f0eb;
+      --bg-card: #ffffff;
+      --bg-sidebar: #ffffffee;
+      --bg-nav: rgba(245, 240, 235, 0.88);
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a6a;
+      --text-muted: #8888aa;
+      --border: rgba(102, 169, 201, 0.2);
+      --shadow: rgba(102, 169, 201, 0.15);
+      --overlay: rgba(26, 26, 46, 0.55);
+
+      --sidebar-w: 280px;
+      --nav-h: 64px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-sidebar: #161b22ee;
+      --bg-nav: rgba(13, 17, 23, 0.92);
+      --text-primary: #e6edf3;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --border: rgba(102, 169, 201, 0.15);
+      --shadow: rgba(0, 0, 0, 0.4);
+      --overlay: rgba(0, 0, 0, 0.65);
+    }
+
+   .back-top {
+   position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 8px 30px var(--shadow);
+  transition: all 0.3s ease;
+  z-index: 999;
+    opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.back-top.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.back-top:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.section-title {
+  text-align: center;
+  width: 100%;
+}
+
+/* 畫面中央 */
+.story-text {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  font-family: 'Noto Serif SC', serif;
+  /* 增加置中設定 */
+  margin: 0 auto !important; 
+  float: none !important;
+}
+
+/* 保持首字放大 */
+.story-text p:first-of-type::first-letter {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 56px;
+  float: left;
+  line-height: 0.85;
+  margin: 6px 12px 0 0;
+  color: var(--accent);
+}
+
+/* 特別上色句子 */
+.highlight-line {
+  color: #66a9c9; /* 可以換你喜歡的顏色 */
+  font-weight: 500;
+}
+
+/* 引用區塊 */
+.quote-block {
+  margin-top: 20px;
+  padding: 12px 18px;
+  border-left: 3px solid #aaa;
+  color: #999;
+  font-style: italic;
+  background-color: rgba(255, 255, 255, 0.03); /* 很淡的底色 */
+  line-height: 1.6;
+}
+
+    /* ===== Reset ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Serif SC', 'Lora', serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      transition: background var(--transition), color var(--transition);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ===== Overlay Backdrop ===== */
+    .sidebar-backdrop {
+      position: fixed; inset: 0; z-index: 99;
+      background: var(--overlay);
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition);
+      backdrop-filter: blur(3px);
+    }
+    .sidebar-backdrop.active { opacity: 1; pointer-events: all; }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      position: fixed; top: 0; left: 0; z-index: 100;
+      width: var(--sidebar-w); height: 100vh;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      transform: translateX(calc(-1 * var(--sidebar-w)));
+      transition: transform var(--transition);
+      display: flex; flex-direction: column;
+      box-shadow: 4px 0 30px var(--shadow);
+    }
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-header {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 13px; letter-spacing: 0.12em;
+      color: var(--accent); text-transform: uppercase;
+    }
+    .sidebar-subtitle {
+      font-size: 11px; color: var(--text-muted);
+      margin-top: 4px; letter-spacing: 0.08em;
+    }
+    .sidebar-close {
+      position: absolute; top: 20px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 22px;
+      padding: 4px; border-radius: 6px;
+      transition: color var(--transition), background var(--transition);
+    }
+    .sidebar-close:hover { color: var(--accent); background: var(--border); }
+
+    .sidebar-nav { flex: 1; padding: 20px 0; overflow-y: auto; }
+    .nav-section-title {
+      font-size: 10.5px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); padding: 0 24px 8px;
+      font-family: 'Cinzel Decorative', serif;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 24px; cursor: pointer;
+      color: var(--text-secondary); font-size: 14px;
+      transition: all var(--transition); text-decoration: none;
+      position: relative;
+    }
+    .nav-item::before {
+      content: ''; position: absolute; left: 0; top: 50%;
+      transform: translateY(-50%) scaleY(0);
+      width: 3px; height: 70%; border-radius: 0 2px 2px 0;
+      background: var(--accent); transition: transform var(--transition);
+    }
+    .nav-item:hover, .nav-item.active {
+      color: var(--accent); background: var(--accent-glow);
+    }
+    .nav-item:hover::before, .nav-item.active::before { transform: translateY(-50%) scaleY(1); }
+    .nav-icon { font-size: 17px; width: 20px; text-align: center; }
+
+    .sidebar-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--text-muted);
+      text-align: center; letter-spacing: 0.06em;
+    }
+
+    /* ===== Topbar ===== */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      height: var(--nav-h);
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 24px;
+      background: var(--bg-nav);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    .topbar-menu-btn {
+      background: none; border: none; cursor: pointer;
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 5px;
+      transition: background var(--transition);
+      flex-shrink: 0;
+    }
+    .topbar-menu-btn:hover { background: var(--accent-glow); }
+    .topbar-menu-btn span {
+      display: block; width: 20px; height: 2px;
+      background: var(--accent); border-radius: 1px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .topbar-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 14px; letter-spacing: 0.1em;
+      color: var(--accent); white-space: nowrap;
+    }
+
+    /* ===== Main Content ===== */
+    .main { padding-top: var(--nav-h); }
+
+    /* ===== Hero Carousel ===== */
+    .hero {
+      position: relative;
+  height: 85vh; 
+  max-height: 900px;
+  min-height: 500px;
+  overflow: hidden;
+    }
+    .carousel-slides { position: relative; width: 100%; height: 100%; }
+    .carousel-slide {
+      position: absolute; inset: 0;
+      opacity: 0; transition: opacity 1.2s ease;
+      display: flex; align-items: flex-end;
+    }
+    .carousel-slide.active { opacity: 1; }
+    .slide-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+    .carousel-slide.active .slide-bg { transform: scale(1); }
+    .slide-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.35) 50%,
+        rgba(0,0,0,0.1) 100%
+      );
+    }
+    .slide-content {
+      position: relative; z-index: 2;
+      padding: 60px 80px; max-width: 750px;
+    }
+    .slide-tag {
+      display: inline-block;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 10px; letter-spacing: 0.2em;
+      color: var(--accent-light); text-transform: uppercase;
+      margin-bottom: 16px; padding: 4px 14px;
+      border: 1px solid var(--accent-light);
+      border-radius: 20px;
+    }
+    .slide-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(28px, 5vw, 58px);
+      color: #ffffff; line-height: 1.2;
+      margin-bottom: 16px; text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .slide-desc {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 15px; color: rgba(255,255,255,0.75);
+      line-height: 1.7; max-width: 480px;
+    }
+
+    /* Carousel Controls */
+    .carousel-controls {
+      position: absolute; bottom: 40px; right: 80px;
+      z-index: 10; display: flex; align-items: center; gap: 12px;
+    }
+    .carousel-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s;
+    }
+    .carousel-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .carousel-dots {
+      display: flex; gap: 8px; align-items: center;
+    }
+    .carousel-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.4); cursor: pointer;
+      transition: all 0.3s; border: none;
+    }
+    .carousel-dot.active {
+      width: 24px; border-radius: 4px;
+      background: var(--accent);
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%;
+      transform: translateX(-50%); z-index: 10;
+      color: rgba(255,255,255,0.5); font-size: 11px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .scroll-arrow {
+      width: 1px; height: 36px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.5));
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3; transform:scaleY(0.7)} 50%{opacity:1; transform:scaleY(1)} }
+
+    /* ===== Story Section ===== */
+    .story-section {
+      padding: 100px 0; position: relative; overflow: hidden;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    .section-eyebrow {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 10px; letter-spacing: 0.2em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(22px, 3.5vw, 42px);
+      color: var(--text-primary); margin-bottom: 40px;
+      line-height: 1.25;
+    }
+    .story-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: start;
+    }
+    .story-text p {
+      font-family: 'Lora', serif; font-size: 15px;
+      color: var(--text-secondary); line-height: 2;
+      margin-bottom: 20px;
+    }
+    .story-text p:first-of-type::first-letter {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 56px; float: left; line-height: 0.85;
+      margin: 6px 12px 0 0; color: var(--accent);
+    }
+    .story-aside {
+      position: sticky; top: calc(var(--nav-h) + 24px);
+    }
+    .char-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 40px var(--shadow);
+    }
+    .char-card-img {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #2a4a6b, #66a9c9, #4a8aab);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 80px; position: relative; overflow: hidden;
+    }
+    .char-card-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, var(--bg-card));
+    }
+    .char-card-body { padding: 24px; }
+    .char-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 18px; color: var(--text-primary); margin-bottom: 4px;
+    }
+    .char-title {
+      font-size: 12px; color: var(--accent);
+      letter-spacing: 0.08em; margin-bottom: 16px;
+    }
+    .char-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .char-stat label {
+      font-size: 10px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.1em; display: block;
+      margin-bottom: 3px;
+    }
+    .char-stat span { font-size: 13px; color: var(--text-secondary); }
+    .char-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .char-tag {
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; border: 1px solid var(--border);
+      color: var(--accent); background: var(--accent-glow);
+    }
+
+    /* ===== Divider ===== */
+    .divider {
+      display: flex; align-items: center; gap: 20px;
+      margin: 80px 0 60px;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+    .divider-icon {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 10px; color: var(--accent);
+      letter-spacing: 0.15em; white-space: nowrap;
+    }
+
+    /* ===== Articles ===== */
+    .articles-section { padding: 60px 0 100px; }
+    .articles-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; margin-bottom: 48px;
+    }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+    }
+    .article-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .article-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px var(--shadow);
+      border-color: var(--accent);
+    }
+    .article-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px; position: relative; overflow: hidden;
+       }
+    .article-thumb-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px;
+      transition: transform 0.5s ease;
+    }
+    .article-card:hover .article-thumb-inner { transform: scale(1.08); }
+    .article-body { padding: 22px 24px 24px; }
+    .article-meta {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .article-cat {
+      font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+      font-family: 'Cinzel Decorative', serif;
+    }
+    .article-date { font-size: 11px; color: var(--text-muted); }
+    .article-title {
+      font-family: 'Lora', serif; font-size: 16px;
+      color: var(--text-primary); line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .article-excerpt {
+      font-size: 13px; color: var(--text-muted); line-height: 1.7;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .article-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 18px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .article-read-more {
+      font-size: 12px; color: var(--accent);
+      letter-spacing: 0.08em; display: flex; align-items: center; gap: 4px;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .article-read-more:hover { opacity: 0.7; }
+    .article-tags { display: flex; gap: 6px; }
+    .article-tag {
+      font-size: 10px; padding: 2px 8px; border-radius: 10px;
+      background: var(--accent-glow); color: var(--accent); border: 1px solid var(--border);
+    }
+
+    /* No results */
+    .no-results {
+      grid-column: 1/-1; text-align: center; padding: 80px 0;
+      color: var(--text-muted);
+    }
+    .no-results-icon { font-size: 48px; margin-bottom: 16px; }
+    .no-results-text { font-size: 14px; }
+
+    /* ===== Footer ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 40px; text-align: center;
+    }
+    footer .footer-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 16px; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    footer p {
+      font-size: 12px; color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    footer .footer-copyright {
+      font-size: 10px; color: var(--text-muted);
+      letter-spacing: 0.05em; opacity: 0.65;
+      margin-top: 10px;
+    }
+
+    /* ===== Fade-in animations ===== */
+    .fade-in {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== Page Transitions ===== */
+    .page-view {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      z-index: 200;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      pointer-events: none;
+      transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .page-view.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    /* ===== Sub-page Hero ===== */
+    .subpage-hero {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      min-height: 420px;
+      max-height: 800px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .subpage-hero-bg {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center top;
+      transform: scale(1.04);
+      transition: transform 8s ease;
+    }
+    .subpage-hero.loaded .subpage-hero-bg { transform: scale(1); }
+    .subpage-hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.88) 0%,
+        rgba(0,0,0,0.4) 55%,
+        rgba(0,0,0,0.08) 100%
+      );
+    }
+    .subpage-hero-content {
+      position: relative; z-index: 2;
+      padding: 56px 80px;
+      max-width: 900px;
+    }
+    .subpage-eyebrow {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 10px; letter-spacing: 0.22em;
+      color: var(--accent-light); text-transform: uppercase;
+      margin-bottom: 14px; display: inline-block;
+      padding: 4px 14px;
+      border: 1px solid var(--accent-light);
+      border-radius: 20px;
+    }
+    .subpage-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(30px, 5vw, 62px);
+      color: #fff; line-height: 1.2;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+    }
+    .subpage-subtitle {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 16px; color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+    }
+
+    /* ===== Sub-page Top-left Button (menu or back) ===== */
+    .subpage-top-btn {
+      position: fixed;
+      top: 18px; left: 20px;
+      z-index: 300;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(13,17,23,0.65);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(102,169,201,0.3);
+      color: #fff;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 11px; letter-spacing: 0.1em;
+      padding: 9px 18px; border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+    .subpage-top-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .subpage-top-btn.back-btn:hover { transform: translateX(-3px); }
+    .subpage-top-btn svg {
+      width: 14px; height: 14px; flex-shrink: 0;
+    }
+    .subpage-menu-bars {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .subpage-menu-bars span {
+      display: block; width: 16px; height: 2px;
+      background: currentColor; border-radius: 1px;
+    }
+
+    /* ===== Section Extra Buttons ===== */
+    .section-extra-btns {
+      display: flex; justify-content: center; gap: 16px;
+      padding: 32px 40px 0;
+      flex-wrap: wrap;
+    }
+    .section-extra-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      border-radius: 30px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 12px; letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+    .section-extra-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+    .section-extra-btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .section-extra-btn.primary:hover {
+      background: var(--accent-dark);
+    }
+
+    /* ===== Small Worlds Modal ===== */
+    .worlds-modal-bg {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .worlds-modal-bg.open { opacity: 1; pointer-events: all; }
+    .worlds-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      width: min(720px, 92vw);
+      max-height: 82vh;
+      overflow-y: auto;
+      padding: 48px 44px;
+      position: relative;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+    }
+    .worlds-modal-bg.open .worlds-modal {
+      transform: translateY(0) scale(1);
+    }
+    .worlds-modal-close {
+      position: absolute; top: 18px; right: 20px;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 22px;
+      padding: 6px; border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .worlds-modal-close:hover { color: var(--accent); background: var(--accent-glow); }
+    .worlds-modal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 20px; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .worlds-modal-subtitle {
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 36px; letter-spacing: 0.05em;
+    }
+    .worlds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 18px;
+    }
+    .world-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 18px 22px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .world-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 40px var(--shadow);
+    }
+    .world-card-icon { font-size: 36px; margin-bottom: 12px; }
+    .world-card-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 12px; color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .world-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ===== Story World Page ===== */
+    .story-world-page {
+      min-height: 100vh;
+      background: var(--bg);
+    }
+    .story-world-hero {
+      position: relative;
+      width: 100%; height: 65vh;
+      min-height: 380px; max-height: 750px;
+      overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .story-world-hero-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+    }
+    .story-world-hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+    }
+    .story-world-hero-content {
+      position: relative; z-index: 2;
+      padding: 52px 72px;
+    }
+    .story-world-back {
+      position: fixed; top: 18px; left: 20px; z-index: 300;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(13,17,23,0.65);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(102,169,201,0.3);
+      color: #fff;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 11px; letter-spacing: 0.1em;
+      padding: 9px 18px; border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .story-world-back:hover {
+      background: var(--accent); border-color: var(--accent);
+      transform: translateX(-3px);
+    }
+    .story-world-back svg { width: 14px; height: 14px; }
+    .story-world-body {
+      max-width: 820px; margin: 0 auto;
+      padding: 68px 40px 80px;
+    }
+    .story-world-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 16px; line-height: 2.1;
+      color: var(--text-secondary);
+    }
+    .story-world-text p { margin-bottom: 24px; }
+    .story-world-text p:first-of-type::first-letter {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 52px; float: left;
+      line-height: 0.85; margin: 6px 12px 0 0;
+      color: var(--accent);
+    }
+    @media (max-width: 768px) {
+      .section-extra-btns { padding: 24px 20px 0; flex-direction: column; align-items: center; }
+      .worlds-modal { padding: 36px 24px; }
+      .worlds-grid { grid-template-columns: 1fr 1fr; }
+      .story-world-hero-content { padding: 36px 24px; }
+      .story-world-body { padding: 48px 20px 60px; }
+    }
+
+    /* ===== Sub-page Body ===== */
+    .subpage-body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 72px 40px 80px;
+    }
+
+    .subpage-section {
+      margin-bottom: 72px;
+    }
+    .subpage-section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 18px; color: var(--accent);
+      margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+    }
+    .subpage-section-title::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    .subpage-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 16px; line-height: 2;
+      color: var(--text-secondary);
+    }
+    .subpage-text p { margin-bottom: 20px; }
+    .subpage-text p:first-of-type::first-letter {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 52px; float: left;
+      line-height: 0.85; margin: 6px 12px 0 0;
+      color: var(--accent);
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-top: 32px;
+    }
+    .char-profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .char-profile-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px var(--shadow);
+      border-color: var(--accent);
+    }
+    .char-profile-img {
+      width: 100%; aspect-ratio: 3/4;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; position: relative;
+      overflow: hidden;
+    }
+    .char-profile-img::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(to top, var(--bg-card), transparent);
+    }
+    .char-profile-body { padding: 20px 22px 24px; }
+    .char-profile-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 18px; color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .char-profile-role {
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.char-profile-role::after {
+  content: '';
+  display: block;
+  width: 100%; height: 1px;
+  background: var(--accent);
+  margin-top: 15px;
+  opacity: 0.3; 
+}
+
+    .char-profile-desc {
+      font-size: 15.4px; color: var(--text-muted);
+      line-height: 1.85;
+    }
+    .char-profile-badges {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 14px;
+    }
+    .char-profile-badge {
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 10px;
+      border: 1px solid var(--border);
+      color: var(--accent); background: var(--accent-glow);
+    }
+
+    /* World setting blocks */
+    .world-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+    .world-block:hover { box-shadow: 0 12px 40px var(--shadow); }
+    .world-block::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
+      border-radius: 4px 0 0 4px;
+    }
+    .world-block-icon {
+      font-size: 32px; margin-bottom: 14px;
+    }
+    .world-block-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 18px; color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .world-block-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 16px; line-height: 1.9;
+      color: var(--text-secondary);
+    }
+
+    /* Origin timeline */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 7px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+    .timeline-dot {
+      position: absolute; left: -28px; top: 6px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .timeline-label {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 10px; letter-spacing: 0.15em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .timeline-title {
+      font-family: 'Lora', serif;
+      font-size: 16px; color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .timeline-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px; line-height: 1.9;
+      color: var(--text-muted);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .slide-content { padding: 40px 28px; }
+      .carousel-controls { right: 28px; bottom: 100px; }
+      .story-grid { grid-template-columns: 1fr; gap: 40px; }
+      .story-aside { position: static; }
+      .container { padding: 0 20px; }
+      .articles-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .topbar-title { display: none; }
+      .subpage-hero-content { padding: 40px 28px; }
+      .subpage-body { padding: 50px 20px 60px; }
+      .subpage-top-btn { font-size: 10px; padding: 8px 14px; }
+    }
+
+    /* ===== Story Hub Page ===== */
+    .story-hub-page { min-height: 100vh; background: var(--bg); }
+    .story-hub-hero {
+      position: relative; width: 100%; height: 60vh;
+      min-height: 360px; max-height: 700px;
+      overflow: hidden; display: flex; align-items: flex-end;
+    }
+    .story-hub-hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+        url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat;
+    }
+    .story-hub-hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+    }
+    .story-hub-hero-content { position: relative; z-index: 2; padding: 52px 72px; }
+    .story-hub-back {
+      position: fixed; top: 18px; left: 20px; z-index: 300;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(13,17,23,0.65); backdrop-filter: blur(14px);
+      border: 1px solid rgba(102,169,201,0.3); color: #fff;
+      font-family: 'Cinzel Decorative', serif; font-size: 11px; letter-spacing: 0.1em;
+      padding: 9px 18px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
+    }
+    .story-hub-back:hover { background: var(--accent); border-color: var(--accent); transform: translateX(-3px); }
+    .story-hub-back svg { width: 14px; height: 14px; }
+    .story-hub-body { max-width: 880px; margin: 0 auto; padding: 72px 40px 100px; }
+    .arc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 8px; }
+    .arc-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden; cursor: pointer; transition: all 0.35s ease;
+    }
+    .arc-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px var(--shadow); border-color: var(--accent); }
+    .arc-card-banner {
+      height: 130px; display: flex; align-items: center; justify-content: center;
+      font-size: 52px; position: relative;
+    }
+    .arc-card-banner::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+      background: linear-gradient(to top, var(--bg-card), transparent);
+    }
+    .arc-card-body { padding: 20px 24px 28px; }
+    .arc-card-label { font-family: 'Cinzel Decorative', serif; font-size: 9px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+    .arc-card-title { font-family: 'Cinzel Decorative', serif; font-size: 16px; color: var(--text-primary); margin-bottom: 10px; }
+    .arc-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
+    .arc-card-arrow { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font-size: 12px; color: var(--accent); font-family: 'Cinzel Decorative', serif; }
+
+    /* ===== Arc Chapter List Page ===== */
+    .arc-list-page { min-height: 100vh; background: var(--bg); }
+    .arc-list-hero {
+      position: relative; width: 100%; height: 55vh;
+      min-height: 320px; max-height: 650px; overflow: hidden; display: flex; align-items: flex-end;
+    }
+    .arc-list-hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .arc-list-hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+    }
+    .arc-list-hero-content { position: relative; z-index: 2; padding: 48px 72px; }
+    .arc-list-back {
+      position: fixed; top: 18px; left: 20px; z-index: 300;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(13,17,23,0.65); backdrop-filter: blur(14px);
+      border: 1px solid rgba(102,169,201,0.3); color: #fff;
+      font-family: 'Cinzel Decorative', serif; font-size: 11px; letter-spacing: 0.1em;
+      padding: 9px 18px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
+    }
+    .arc-list-back:hover { background: var(--accent); border-color: var(--accent); transform: translateX(-3px); }
+    .arc-list-back svg { width: 14px; height: 14px; }
+    .arc-list-body { max-width: 760px; margin: 0 auto; padding: 60px 40px 100px; }
+    .arc-synopsis {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 36px 40px; margin-bottom: 48px;
+      border-left: 4px solid var(--accent);
+    }
+    .arc-synopsis-label { font-family: 'Cinzel Decorative', serif; font-size: 11px; color: var(--accent); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 14px; }
+    .arc-synopsis-text { font-family: 'Noto Serif SC', serif; font-size: 15px; line-height: 2; color: var(--text-secondary); }
+    .chapter-list-label { font-family: 'Cinzel Decorative', serif; font-size: 11px; color: var(--text-muted); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 20px; }
+    .chapter-items { display: flex; flex-direction: column; gap: 10px; }
+    .chapter-item {
+      display: flex; align-items: center; gap: 20px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 24px; cursor: pointer; transition: all 0.3s ease;
+    }
+    .chapter-item:hover { border-color: var(--accent); background: var(--accent-glow); transform: translateX(6px); }
+    .chapter-item-num { font-family: 'Cinzel Decorative', serif; font-size: 12px; color: var(--accent); min-width: 60px; }
+    .chapter-item-info { flex: 1; }
+    .chapter-item-title { font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
+    .chapter-item-desc { font-size: 12px; color: var(--text-muted); }
+    .chapter-item-arrow { color: var(--accent); font-size: 18px; }
+
+    /* ===== Chapter Reader Page ===== */
+    .reader-page { min-height: 100vh; background: var(--bg); padding-bottom: 100px; }
+    .reader-hero {
+      position: relative; width: 100%; height: 50vh;
+      min-height: 280px; max-height: 580px; overflow: hidden; display: flex; align-items: flex-end;
+    }
+    .reader-hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .reader-hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 65%, transparent 100%);
+    }
+    .reader-hero-content { position: relative; z-index: 2; padding: 44px 72px; }
+    .reader-body { max-width: 720px; margin: 0 auto; padding: 60px 40px 40px; }
+    .reader-text { font-family: 'Noto Serif SC', serif; font-size: 17px; line-height: 2.2; color: var(--text-secondary); }
+    .reader-text p { margin-bottom: 28px; }
+    .reader-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-nav); backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border); height: 64px; padding: 0 24px; gap: 12px;
+    }
+    .reader-nav-btn {
+      display: flex; align-items: center; gap: 7px;
+      background: none; border: 1px solid var(--border); color: var(--accent);
+      font-family: 'Cinzel Decorative', serif; font-size: 11px; letter-spacing: 0.07em;
+      padding: 8px 18px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;
+    }
+    .reader-nav-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .reader-nav-btn:disabled { opacity: 0.28; pointer-events: none; }
+    .reader-nav-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .reader-nav-toc {
+      display: flex; align-items: center; gap: 7px; background: var(--accent); color: #fff;
+      font-family: 'Cinzel Decorative', serif; font-size: 11px; letter-spacing: 0.07em;
+      padding: 8px 24px; border-radius: 30px; cursor: pointer; border: none; transition: all 0.3s ease;
+    }
+    .reader-nav-toc:hover { background: var(--accent-dark); }
+
+    @media (max-width: 768px) {
+      .arc-cards { grid-template-columns: 1fr; }
+      .story-hub-hero-content, .arc-list-hero-content, .reader-hero-content { padding: 36px 24px; }
+      .story-hub-body, .arc-list-body, .reader-body { padding: 48px 20px 40px; }
+      .reader-nav { padding: 0 12px; gap: 8px; }
+      .reader-nav-btn { font-size: 10px; padding: 7px 12px; }
+      .reader-nav-toc { padding: 7px 14px; font-size: 10px; }
+    }
+
+    /* ===== TOC Modal (Chapter List Popup) ===== */
+    .toc-modal-bg {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .toc-modal-bg.open { opacity: 1; pointer-events: all; }
+    .toc-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      width: min(520px, 92vw);
+      max-height: 75vh;
+      overflow-y: auto;
+      padding: 40px 36px;
+      position: relative;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+    }
+    .toc-modal-bg.open .toc-modal { transform: translateY(0) scale(1); }
+    .toc-modal-close {
+      position: absolute; top: 16px; right: 18px;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 22px;
+      padding: 6px; border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .toc-modal-close:hover { color: var(--accent); background: var(--accent-glow); }
+    .toc-modal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 17px; color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .toc-modal-subtitle {
+      font-size: 12px; color: var(--text-muted);
+      margin-bottom: 28px; letter-spacing: 0.05em;
+    }
+    .toc-chapter-items { display: flex; flex-direction: column; gap: 8px; }
+    .toc-chapter-item {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 18px; cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .toc-chapter-item:hover { border-color: var(--accent); background: var(--accent-glow); transform: translateX(4px); }
+    .toc-chapter-item.active { border-color: var(--accent); background: var(--accent-glow); }
+    .toc-chapter-num { font-family: 'Cinzel Decorative', serif; font-size: 11px; color: var(--accent); min-width: 50px; }
+    .toc-chapter-title { flex: 1; font-size: 14px; color: var(--text-primary); }
+    .toc-chapter-arrow { color: var(--accent); font-size: 16px; }
+
+    /* ===== Character Card Clickable ===== */
+    .char-profile-card {
+      cursor: pointer;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    .char-profile-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px var(--shadow);
+      border-color: var(--accent);
+    }
+    .char-profile-card .char-read-more {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 14px; font-size: 12px; color: var(--accent);
+      font-family: 'Cinzel Decorative', serif; letter-spacing: 0.08em;
+      opacity: 0; transform: translateX(-6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .char-profile-card:hover .char-read-more {
+      opacity: 1; transform: translateX(0);
+    }
+
+    /* ===== Character Detail Page ===== */
+    .char-detail-page { min-height: 100vh; background: var(--bg); }
+    .char-detail-hero {
+      position: relative; width: 100%; height: 65vh;
+      min-height: 380px; max-height: 780px;
+      overflow: hidden; display: flex; align-items: flex-end;
+    }
+    .char-detail-hero-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center top;
+    }
+    .char-detail-hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+    }
+    .char-detail-hero-content {
+      position: relative; z-index: 2; padding: 52px 80px;
+      display: flex; align-items: flex-end; gap: 48px; width: 100%;
+    }
+    .char-detail-avatar {
+      width: 130px; height: 130px; border-radius: 50%;
+      border: 3px solid var(--accent);
+      overflow: hidden; flex-shrink: 0;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px;
+    }
+    .char-detail-meta { flex: 1; }
+    .char-detail-back {
+      position: fixed; top: 18px; left: 20px; z-index: 300;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(13,17,23,0.65); backdrop-filter: blur(14px);
+      border: 1px solid rgba(102,169,201,0.3); color: #fff;
+      font-family: 'Cinzel Decorative', serif; font-size: 11px; letter-spacing: 0.1em;
+      padding: 9px 18px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
+    }
+    .char-detail-back:hover { background: var(--accent); border-color: var(--accent); transform: translateX(-3px); }
+    .char-detail-back svg { width: 14px; height: 14px; }
+    .char-detail-body { max-width: 900px; margin: 0 auto; padding: 60px 40px 100px; }
+    .char-detail-section { margin-bottom: 52px; }
+    .char-detail-section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 18px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .char-detail-section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .char-detail-text {
+      font-family: 'Noto Serif SC', serif; font-size: 16px;
+      line-height: 2.1; color: var(--text-secondary);
+    }
+    .char-detail-text p { margin-bottom: 18px; }
+    .char-stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px; margin-top: 4px;
+    }
+    .char-stat-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 20px;
+    }
+    .char-stat-item label {
+      font-size: 12.75px; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--text-muted); display: block; margin-bottom: 6px;
+      font-family: 'Cinzel Decorative', serif;
+    }
+    .char-stat-item span {
+      font-size: 14.5px; color: var(--text-primary);
+      font-family: 'Noto Serif SC', serif;
+    }
+    .char-quote-block {
+      margin: 28px 0; padding: 20px 28px;
+      border-left: 3px solid var(--accent);
+      background: var(--bg-card); border-radius: 0 14px 14px 0;
+      font-style: italic; color: var(--text-muted); line-height: 1.9;
+      font-family: 'Lora', serif; font-size: 15px;
+    }
+    .char-relation-list { display: flex; flex-direction: column; gap: 12px; }
+    .char-relation-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 20px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .char-relation-icon { font-size: 28px; flex-shrink: 0; }
+    .char-relation-name { font-size: 14px; color: var(--text-primary); margin-bottom: 3px; font-family: 'Noto Serif SC', serif; }
+    .char-relation-role { font-size: 12px; color: var(--accent); }
+    .char-trait-list { display: flex; flex-wrap: wrap; gap: 10px; }
+    .char-trait {
+      padding: 7px 16px; border-radius: 20px;
+      border: 1px solid var(--border); background: var(--bg-card);
+      font-size: 13px; color: var(--text-secondary);
+      font-family: 'Noto Serif SC', serif;
+    }
+
+    @media (max-width: 768px) {
+      .char-detail-hero-content { flex-direction: column; align-items: flex-start; gap: 16px; padding: 36px 24px; }
+      .char-detail-body { padding: 40px 20px 80px; }
+      .char-stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <!-- ===================== HOME PAGE ===================== -->
+  <template v-if="currentPage === 'home'">
+    <!-- Sidebar Backdrop -->
+    <div class="sidebar-backdrop" :class="{ active: sidebarOpen }" @click="sidebarOpen = false"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Remnants of Destiny</div>
+    <div class="sidebar-subtitle">命運的靜物詩</div>
+    <button class="sidebar-close" @click="sidebarOpen = false">✕</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">基本介面</div>
+    <a class="nav-item" :class="{ active: activeSection === 'hero' }" href="#hero" @click="navTo('hero')">
+      <span class="nav-icon">✦</span> 首頁
+    </a>
+  
+    <div style="margin-top: 20px">
+      <div class="nav-section-title">背景故事</div>
+      <a class="nav-item" @click="openPage(1); sidebarOpen = false">
+        <span class="nav-icon">💫</span> 一切的起源
+      </a>
+      <a class="nav-item" @click="openPage(2); sidebarOpen = false">
+        <span class="nav-icon">👤</span> 角色介紹
+      </a>
+      <a class="nav-item" @click="openPage(3); sidebarOpen = false">
+        <span class="nav-icon">🌐</span> 世界觀設定
+      </a> 
+
+    <div style="margin-top: 20px"></div>
+    <div class="nav-section-title">主要故事</div>
+    <a class="nav-item" @click="openStoryHub(); subSidebarOpen = false"> <span class="nav-icon">✨</span> 探索她的故事</a>
+   <a class="nav-item" @click="worldsModalOpen = true; subSidebarOpen = false"> <span class="nav-icon">🌍</span> 前往其他小世界</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    命運的靜物詩 · Remnants of Destiny
+  </div>
+</aside>
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="topbar-menu-btn" @click="sidebarOpen = true" title="打開目錄">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title">目錄</div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Hero Carousel -->
+      <section class="hero" id="hero">
+        <div class="carousel-slides">
+          <div
+            v-for="(slide, i) in slides"
+            :key="i"
+            class="carousel-slide"
+            :class="{ active: currentSlide === i }"
+          >
+            <div class="slide-bg" :style="{ background: slide.bg }"></div>
+            <div class="slide-gradient"></div>
+            <div class="slide-content">
+              <span class="slide-tag">{{ slide.tag }}</span>
+              <h1 class="slide-title">{{ slide.title }}</h1>
+              <p class="slide-desc">{{ slide.desc }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-btn" @click="prevSlide">‹</button>
+          <div class="carousel-dots">
+            <button
+              v-for="(_, i) in slides"
+              :key="i"
+              class="carousel-dot"
+              :class="{ active: currentSlide === i }"
+              @click="goToSlide(i)"
+            ></button>
+          </div>
+          <button class="carousel-btn" @click="nextSlide">›</button>
+        </div>
+
+        <div class="scroll-hint">
+          <span>Scroll</span>
+          <div class="scroll-arrow"></div>
+        </div>
+      </section>
+
+      <!-- Story Section -->
+     <section class="story-section" id="story">
+  <div class="container" style="text-align: center;"> <div class="fade-in">
+      <div class="section-eyebrow">Introduction</div>
+      <h2 class="section-title">引言</h2>
+    </div>
+    
+    <div class="story-grid" style="display: block;"> <div class="story-text fade-in" style="max-width: 700px; margin: 0 auto; text-align: left;">
+          <p>
+            在那片被霧霾壟罩的邊境之地，有一棟古老的宅邸。據當地村民所說，從未有人看過宅邸主人的模樣，唯有渡鴉的啼叫聲在附近久久迴盪，彷彿在守護著什麼秘密。
+          </p>
+          <p>
+            ▍歡迎來到命運的靜物詩 —— 
+             <span style="font-family: 'Arial', sans-serif;">Remnants of Destiny</span><br>
+            這是一個以渡鴉小姐為主角所展開的故事。
+          </p>
+          <p>
+            這是一個關於…<br>
+            ✦ 三位科學家所製造的巴別塔<br>
+            ✦ 兩隻神鳥所帶來的因果<br>
+            ✦ 這是由一位少女所親手書寫的 — 
+            <span style="font-weight: bold; font-size: 20px;">世界的終章</span>
+          </p>
+        </div>
+        </div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="section-eyebrow">✦ I would like to introduce...  ✦</div>
+        <div class="divider-line"></div>
+      </div>
+    </div>
+  </section>
+
+      <!-- Articles Section -->
+     <section class="articles-section" id="articles">
+  <div class="container">
+    
+    <div class="articles-grid">
+      <div
+        v-if="filteredArticles.length === 0"
+        class="no-results"
+      >
+        <div class="no-results-icon">🔎</div>
+        <div class="no-results-text">未找到相關文章</div>
+      </div>
+
+      <div
+        v-for="(article, i) in filteredArticles"
+        :key="article.id"
+        class="article-card fade-in"
+        :style="{ transitionDelay: `${i * 0.07}s` }"
+      >
+        <div class="article-thumb">
+          <div class="article-thumb-inner" :style="{ background: article.color }">
+            <span>{{ article.emoji }}</span>
+          </div>
+        </div>
+        <div class="article-body">
+          <div class="article-meta">
+            <span class="article-cat">{{ article.category }}</span>
+            <span style="color: var(--border);">·</span>
+            <span class="article-date">{{ article.date }}</span>
+          </div>
+          <h3 class="article-title">{{ article.title }}</h3>
+          <p class="article-excerpt">{{ article.excerpt }}</p>
+          <div class="article-footer">
+            <span class="article-read-more" @click="openPage(article.id)">閱讀全文 →</span>
+            <div class="article-tags">
+              <span class="article-tag" v-for="tag in article.tags" :key="tag">{{ tag }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Extra buttons below the three sections -->
+  <div class="section-extra-btns">
+    <button class="section-extra-btn primary" @click="openStoryHub">
+      ✦ 探索她的故事
+    </button>
+    <button class="section-extra-btn" @click="worldsModalOpen = true">
+      🌍 前往其他小世界
+    </button>
+  </div>
+</section>
+    </main>
+
+    <footer>
+      <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+      <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+      <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+    </footer>
+
+    <button 
+      class="back-top" 
+      :class="{ show: showBackTop }" 
+      @click="scrollToTop"
+      title="回到頂部"
+    >
+      ↑
+    </button>
+  </template>
+
+  <!-- ===================== SUB PAGES ===================== -->
+  <template v-else-if="currentPage === 'origin' || currentPage === 'character' || currentPage === 'char-detail' || currentPage === 'worldview' || currentPage === 'story-hub'">
+    <!-- Sub-page Sidebar Backdrop -->
+    <div class="sidebar-backdrop" :class="{ active: subSidebarOpen }" @click="subSidebarOpen = false"></div>
+
+    <!-- Sub-page Sidebar -->
+    <aside class="sidebar" :class="{ open: subSidebarOpen }">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">Remnants of Destiny</div>
+        <div class="sidebar-subtitle">命運的靜物詩</div>
+        <button class="sidebar-close" @click="subSidebarOpen = false">✕</button>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">基本介面</div>
+        <a class="nav-item" @click="goHome(); subSidebarOpen = false">
+          <span class="nav-icon">✦</span> 返回首頁
+        </a>
+        <div style="margin-top: 20px">
+          <div class="nav-section-title">背景故事</div>
+          <a class="nav-item" :class="{ active: currentPage === 'origin' }" @click="openPage(1); subSidebarOpen = false">
+            <span class="nav-icon">🌌</span> 一切的起源
+          </a>
+          <a class="nav-item" :class="{ active: currentPage === 'character' }" @click="openPage(2); subSidebarOpen = false">
+            <span class="nav-icon">👤</span> 角色介紹
+          </a>
+          <a class="nav-item" :class="{ active: currentPage === 'worldview' }" @click="openPage(3); subSidebarOpen = false">
+            <span class="nav-icon">🌐</span> 世界觀設定
+          </a>
+
+           <div style="margin-top: 20px"></div>
+    <div class="nav-section-title">主要故事</div>
+    <a class="nav-item" @click="openStoryHub(); sidebarOpen = false">
+      <span class="nav-icon">✨</span> 探索她的故事
+    </a>
+    <a class="nav-item" @click="worldsModalOpen = true; sidebarOpen = false">
+    <span class="nav-icon">🌍</span> 前往其他小世界
+  </a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        命運的靜物詩 · Remnants of Destiny
+      </div>
+    </aside>
+
+    <!-- Sub-page Top-left Menu Button (hidden when sidebar open) -->
+    <button class="subpage-top-btn" @click="subSidebarOpen = true" v-show="!subSidebarOpen">
+      <div class="subpage-menu-bars"><span></span><span></span><span></span></div>
+      目錄
+    </button>
+
+    <!-- ===== ORIGIN PAGE ===== -->
+<div v-if="currentPage === 'origin'">
+  <div class="subpage-hero loaded">
+    <div class="subpage-hero-bg" style="background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat;"></div>
+    <div class="subpage-hero-gradient"></div>
+    <div class="subpage-hero-content">
+      <span class="subpage-eyebrow">Origin · 起源</span>
+      <h1 class="subpage-title">一 切 的 起 源</h1>
+      <p class="subpage-subtitle">過去存在於未來中，而未來亦在過去裡</p>
+    </div>
+  </div>
+
+  <div class="subpage-body">
+    <section class="subpage-section">
+      <div class="subpage-section-title">創世  ·  Genesis</div>
+      <div class="subpage-text">
+        <p>
+          在很遠很遠的未來中，存在著一個沒有「生育」概念的國度。在這裡，人類無法憑藉自己創造生命，只能依靠神明的垂怜。<br><br>
+          然而，不知怎麼的，有一群科學家卻在地底下發現了足以與神明比肩的事物：
+          <span class="highlight-line">一條自千百年前便已存在的寶石礦脈。</span><br><br>
+          寶石礦脈裡蘊含著早該消失的魔法。而這對人類來說，是「創世」最好的「原料」。<br>
+        </p>
+        <blockquote class="quote-block">
+          人們仰望神明的慈悲太久，也早就厭倦了祈求。<br>
+          於是，一場長達百年的「創世」實驗悄然展開 —
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="subpage-section">
+      <div class="subpage-section-title">寶石心臟   ·   The Gem Heart</div>
+      <div class="subpage-text">
+        <p>科學家們以刻印在寶石裡的魔法為基，從中拼接、提煉、創造。<br>最終，他們用寶石造出了一顆「心臟」，一顆如寶石般堅硬、卻又像真正臟腑般脆弱的心臟。<br><br>
+          而當那顆心臟在實驗體的胸腔跳起第一下時，他們意識到：<br></p>
+        <blockquote class="quote-block">
+          他們創造出了「生命」，<br>
+          他們成為了自己口中的「神」。
+        </blockquote>
+        <br>
+        科學家們的組織 ——<span class="highlight-line">「彌賽亞」</span>也因此受到大多數人的支持。<br><br>
+        <p>在這之後，一個個有著<span class="highlight-line">寶石心臟</span>的人造人誕生了。大家稱呼他們為<span class="highlight-line">「巴別塔」</span>。<br>
+          受到帶有魔法的心臟的影響，巴別塔都有著易於常人的能力：預言、操控、模仿、不死等等……<br></p>
+        <blockquote class="quote-block">
+          「神明已失去祂的用途，現在人類才是世界的主宰 ！」<br>
+          人類如此高聲歡呼著。
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="subpage-section">
+      <div class="subpage-section-title">本源   ·   Origin</div>
+      <div class="subpage-text">
+        <p>神在創造一切生命時，都會<span class="highlight-line">為其心臟標上「本源」</span>。<br>每個人的本源都不同，它會標記著每個人<span class="highlight-line">從何而來、為何存在、以及該向何處前行</span>。<br><br>
+          本源既是「定義」，也是「約束」。<br>它確保了每一個生命都被納入世界的管制之中。卻也使人類中無法誕生出足以動搖神明自身的存在。<br>換句話說，「本源」是一種安全機制，將萬物穩固於神所允許的範圍之內。<br><br>
+          而世界的穩定，正是建立於此。<br></p>
+        <p>然而，「無本源之人」卻是例外，他們沒有真實的「心臟」，也就沒有本源。<br>於是，他們會吞噬周圍人的「本源」。而當本源逐漸被削弱、剝離，個體的理智、
+          信念與存在的方向，也會隨之崩解。<br>
+          最終，這些人將失去部分自我，理念以及價值觀開始向「無本源者」靠攏，逐漸脫離神明的掌控。<br></p>
+        <blockquote class="quote-block">
+          巴別塔的心臟作為「人所創造之物」，並未擁有本源。<br>
+          他們成為了世界的漏洞 —— 而漏洞，是要被修正的。
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="subpage-section">
+      <div class="subpage-section-title">時間倒流   ·   Time Reversal</div>
+      <div class="subpage-text">
+        <p>於是世界的「清除機制」開始了，時間開始倒流。<br>
+          以人造人為中心，與實驗者相關的血統、記錄，以及一切能證明這場實驗存在的痕跡都將清除。 
+          一次又一次，時間倒流、文明倒退、科技化為灰燼。
+          這場屠殺為的不是懲罰，而是<span class="highlight-line">「清除所有『無本源造物』的痕跡」</span>。</p>
+        <blockquote class="quote-block">這就是世界的自我修復。
+          它會不斷的重置，直到「不該存在的東西」被完全抹去。 </blockquote>
+      </div>
+    </section>
+
+    <section class="subpage-section">
+      <div class="subpage-section-title">倖存者   ·   Survivor</div>
+      <div class="subpage-text">
+        <p>斯洛特拉剛睜開眼看到的便是這幅景象：</p><br>
+        <blockquote class="quote-block">科學家們的皺紋消失、白髮轉黑、變成少年、孩童
+          、嬰兒，最後連身影都被抹除，只剩下空蕩蕩的白色實驗室。</blockquote><br>
+        <p>可她還活著。<br>正如前面所提到的，受到帶有魔法的心臟的影響，巴別塔都有著易於常人的能力：預言、操控、模仿、不死等等……
+          而她的寶石心臟賦予她的能力正是「死亡」—— 是永不老去、死去、遺忘的「死亡」。<br>
+          又正如前面所說的，世界的時間會不斷的倒流，直至清除所有「無本源造物」的痕跡。</p>
+        <em>✦ 這注定了她會成為時間倒流的變數，也注定了她會踏上一條很長很長的旅途 ——</em><br><br>
+       <p style="text-align: center; margin-top: 40px;">
+        <span style="font-weight: bold; font-size: 20px;">—— 背景故事完 ——</span></p>
+        <p style="text-align: center;">.<br>.<br>.<br><br>等等……你不覺得有哪裡不對勁嗎……？<br><br>
+          ✦ 東邊的科學家們為何會突然前往遙遠的西之國進行實驗 ？<br><br>
+          ✦ 科學家們是如何在毫無線索的狀況下知曉礦脈的存在，並挖出來的 ？<br><br>
+          ✦ 如果每個人的「本源」都是神明標上的，那祂為何會把「試圖創造生命」這種具有威脅性的本源創造出來 ？</p>
+        
+      </div>
+    </section>
+  </div> <footer>
+    <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+    <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+    <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+  </footer>
+</div>
+
+    <!-- ===== CHARACTER PAGE ===== -->
+    <div v-if="currentPage === 'character'">
+      <div class="subpage-hero loaded">
+        <div class="subpage-hero-bg" style="background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(https://cdn.phototourl.com/free/2026-04-09-5c8f6fdd-7d77-4d6e-98f3-019b336fd757.jpg) center/cover no-repeat;"></div>
+        <div class="subpage-hero-gradient"></div>
+        <div class="subpage-hero-content">
+          <span class="subpage-eyebrow">Characters · 人物</span>
+          <h1 class="subpage-title">角 色 介 紹</h1>
+          <p class="subpage-subtitle">於千萬人之中，遇見你要遇見的人</p>
+        </div>
+      </div>
+
+     <div class="subpage-body">
+  <section class="subpage-section">
+    <div class="subpage-section-title">主要角色 · Main Cast</div>
+    <div class="char-grid">
+
+      <div class="char-profile-card" @click="openCharDetail('snotra')">
+        <div class="char-profile-img" style="background: linear-gradient(135deg, #0a1628, #2d6891);">🐦‍⬛</div>
+        <div class="char-profile-body">
+          <div class="char-profile-name">斯洛特拉 · Snotra</div>
+          <div class="char-profile-role">渡鴉小姐 · 寶石收藏家 · 最後的巴別塔</div>
+          <div class="char-profile-desc">某個魔法世家的小姐，同時也是王都裡知名的寶石收藏家。<br>
+            身邊隨時跟著一隻渡鴉，而大小姐對其可謂極盡寵愛，也因此被領地的人們私下稱為「渡鴉小姐」，
+            而她本人似乎對這個稱呼相當滿意。<br><br>不怎麼喜歡人群，因此對自己領地的管理寬鬆而受到人民喜愛，
+            被認為是親和力極高的貴族。<br>然而實際性格非常亂來，對於「滿足自己的所欲所求」這種想法的異常坦誠與執著。</div>
+         
+          <div class="char-read-more">查看詳細介紹 →</div>
+        </div>
+      </div>
+
+      <div class="char-profile-card" @click="openCharDetail('folael')">
+        <div class="char-profile-img" style="background: linear-gradient(135deg, #1a0d28, #6e2d8a);">🌑</div>
+        <div class="char-profile-body">
+          <div class="char-profile-name">仸萊爾 · Folael</div>
+          <div class="char-profile-role">執事 · 魔法師 · 最忠誠的信徒</div>
+          <div class="char-profile-desc">首席魔法學院的頂尖畢業生，在畢業後便消失在大眾視野中。
+            10多年後重新以「大小姐的執事」身份陪伴大小姐出席各種場合。<br>總有人說他和斯洛特拉之間一定達成了什麼協議
+            ，否則一個魔法天才又怎會甘願淪落為為一個執事呢？<br><br>知道自己長得很好看，對自己的外貌也有著十分的自信和自戀，常借此取得好感或是達到目標，
+            社交談吐水準十分之高。<br><br>對大小姐似乎有著複雜的情感……？</div>
+          <div class="char-read-more">查看詳細介紹 →</div>
+        </div>
+      </div>
+
+      <div class="char-profile-card" @click="openCharDetail('raven')">
+        <div class="char-profile-img" style="background: url('https://cdn.phototourl.com/free/2026-04-19-49ee4dc5-67af-4b70-8b55-f4bf02930bf6.jpg') center/cover no-repeat;"></div>
+        <div class="char-profile-body">
+          <div class="char-profile-name">渡鴉先生</div>
+          <div class="char-profile-role">神之子 · 被遺棄的孩子</div>
+          <div class="char-profile-desc">一隻性格很惡劣的……鳥？</div>
+          
+          <div class="char-read-more">查看詳細介紹 →</div>
+        </div>
+      </div>
+
+      <div class="char-profile-card" @click="openCharDetail('aelara')">
+        <div class="char-profile-img" style="background: url('https://cdn.phototourl.com/free/2026-04-16-f971c9eb-9097-4ae9-86e3-2280de361a1d.jpg') center/cover no-repeat;"></div>
+        <div class="char-profile-body">
+          <div class="char-profile-name">艾拉雅 · Aelara</div>
+          <div class="char-profile-role">最初的無本源之物 · 占卜師 · 觀察者</div>
+          <div class="char-profile-desc">隸屬於王都的占卜師，個性非常隨心所欲，經常到處亂跑找不到人。<br>
+            占卜時總是端著棋盤進到一個密閉房間里，沒有人知道她是如何占卜的，但每次的結果都出奇的準？<br><br>
+            不屬於這個時代，在時間倒流尚未發生之前和斯洛特拉處在同一個國度。彌賽亞建造巴別塔這件事她似乎也有參與……？</div>
+         
+          <div class="char-read-more">查看詳細介紹 →</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+      
+      <footer>
+        <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+        <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+        <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+      </footer>
+    </div>
+
+    <!-- ===== CHARACTER DETAIL PAGE ===== -->
+    <div v-if="currentPage === 'char-detail' && currentChar">
+      <div class="char-detail-page">
+        <button class="char-detail-back" @click="currentPage = 'character'; window.scrollTo({top:0,behavior:'instant'})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          返回角色介紹
+        </button>
+
+        <div class="char-detail-hero">
+          <div class="char-detail-hero-bg" :style="{ background: currentChar.heroBg }"></div>
+          <div class="char-detail-hero-gradient"></div>
+          <div class="char-detail-hero-content">
+            <div class="char-detail-avatar" :style="{ background: currentChar.avatarBg }">
+              <span v-if="currentChar.avatarEmoji">{{ currentChar.avatarEmoji }}</span>
+            </div>
+            <div class="char-detail-meta">
+              <h1 class="subpage-title" style="font-size:clamp(24px,4vw,52px)">{{ currentChar.name }}</h1>
+              <p class="subpage-subtitle">{{ currentChar.role }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="char-detail-body">
+          <div class="char-detail-section">
+            <div class="char-detail-section-title">基本資料 · Profile</div>
+            <div class="char-stat-grid">
+              <div class="char-stat-item" v-for="stat in currentChar.stats" :key="stat.label">
+                <label>{{ stat.label }}</label>
+                <span>{{ stat.value }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="char-detail-section">
+            <div class="char-detail-section-title">角色簡介 · Overview</div>
+          <div class="char-detail-text">
+  <div v-for="(para, i) in currentChar.overview" :key="i" v-html="para" style="margin-bottom: 18px;"></div>
+</div>
+
+<div class="char-quote-block" v-if="currentChar.quote">「{{ currentChar.quote }}」</div>
+</div> <div class="char-detail-section" v-if="currentChar.traits && currentChar.traits.length">
+   <div class="char-detail-section-title">性格特質 · Personality</div>
+            <div class="char-trait-list">
+              <span class="char-trait" v-for="trait in currentChar.traits" :key="trait">{{ trait }}</span>
+            </div>
+            <div class="char-detail-text" style="margin-top:20px">
+              <p v-for="(para, i) in currentChar.personality" :key="i">{{ para }}</p>
+            </div>
+          </div>
+
+          <div class="char-detail-section" v-if="currentChar.abilities && currentChar.abilities.length">
+            <div class="char-detail-section-title">能力 · Abilities</div>
+            <div class="char-stat-grid">
+              <div class="char-stat-item" v-for="ab in currentChar.abilities" :key="ab.name">
+                <label>{{ ab.name }}</label>
+                <span>{{ ab.desc }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="char-detail-section" v-if="currentChar.relations && currentChar.relations.length">
+            <div class="char-detail-section-title">人際關係 · Relations</div>
+            <div class="char-relation-list">
+              <div class="char-relation-item" v-for="rel in currentChar.relations" :key="rel.name">
+                <div class="char-relation-icon">{{ rel.icon }}</div>
+                <div>
+                  <div class="char-relation-name">{{ rel.name }}</div>
+                  <div class="char-relation-role">{{ rel.role }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer>
+          <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+          <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+          <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ===== WORLDVIEW PAGE ===== -->
+    <div v-if="currentPage === 'worldview'">
+      <div class="subpage-hero loaded">
+        <div class="subpage-hero-bg" style="background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(https://cdn.phototourl.com/free/2026-04-09-fd5e6c1c-675b-48b6-b175-8493aae4ba84.jpg) center/cover no-repeat;"></div>
+        <div class="subpage-hero-gradient"></div>
+        <div class="subpage-hero-content">
+          <span class="subpage-eyebrow">Worldview · 世界觀</span>
+          <h1 class="subpage-title">世 界 觀 設 定</h1>
+          <p class="subpage-subtitle">關於世界觀的運行規則</p>
+        </div>
+      </div>
+
+      <div class="subpage-body">
+        <section class="subpage-section">
+          <div class="subpage-section-title">世界架構 · World Structure</div>
+
+          <div style="margin-top: 34px;">
+            <div class="world-block">
+              <div class="world-block-icon">🔆</div>
+              <div class="subpage-section-title">彌賽亞 · The Messiah</div>
+              <div class="world-block-text">彌賽亞是由一群科學家所組成的，對神明的一切行為進行研究的組織。<br>
+                組織中旨為:透過研究使神的能力和權柄不再特殊，令世上沒有任何生物能高於人類。<br><br>※彌賽亞源自《舊約聖經》，意為受膏者、受上帝任命的人。</div>
+            </div>
+            <div class="world-block">
+              <div class="world-block-icon">🕍</div>
+              <div class="subpage-section-title">巴別塔 · The Babel Tower</div>
+              <div class="world-block-text">巴別塔實驗是彌賽亞所有實驗中最接近於神的一次實驗。而在這場實驗中被製造出來的，擁有寶石心臟的人造人統一被稱為「巴別塔」。
+                而受到帶有魔法的心臟的影響，巴別塔都有著易於常人的能力：預言、操控、模彷、不死等等……<br><br>※ 巴別塔 ：在聖經中，起初人類說著同一種語言，於是他
+                們決定建造一座「塔頂通天」的巨塔，以彰顯人類的團結，並避免彼此被分散到各地。<br>上帝看到人類的工程，認為他們因為語言相通而開始無所不能，若放任下去任何野心都可能實現，
+                包括違背神的旨意。於是神變亂人類的語言，使人們無法彼此溝通。
+                語言混亂導致建造工程停滯，人類因無法合作而分裂成不同族群，散居到世界各地。那座未完成的塔被稱為「巴別塔」。
+              </div>
+            </div>
+            <div class="world-block">
+              <div class="world-block-icon">👁️‍🗨️</div>
+              <div class="subpage-section-title">本源 · Origin</div>
+              <div class="world-block-text">神在創造一切生命時，都會在其心臟標上「本源」。
+                本源會標記著每個人從何而來、為何存在、以及該向何處前行，每個人的本源都不同。這就像是神在人世間做下的記號，
+                確保了每一個生命都在自己的控制當中。<br><br>而「無本源之人」是非常稀少的存在，目前已知無本源之人只有巴別塔以及█▇▋。<br>
+                無本源之人就像一個黑洞，會不斷吞噬周圍人的「本源」。而當本源逐漸被削弱、剝離，個體的理智、信念與存在的方向，也會隨之崩解。
+                最終，這些人將失去部分自我，理念以及價值觀開始向「無本源者」靠攏，逐漸脫離神明的掌控。
+              </div>
+            </div>
+            <div class="world-block">
+              <div class="world-block-icon">🕥</div>
+              <div class="subpage-section-title">時間到流 · Turn back the clock</div>
+              <div class="world-block-text">世界的自我防禦機制。像是一台電腦一樣，它會不斷的重置刷新，直到「不該存在的東西」被完全抹去。<br><br>
+                ※ 時間倒流是以「天、月、年」等單位隨機倒退，每一次倒退都會消耗世界的力量。
+                所以通常在每次時間倒流完畢之後，都會有一段「正常運行期」，在這期間的時間會是正常往前走的，但維持時間不定。
+              </div>
+            </div>
+
+            <div class="world-block">
+              <div class="world-block-icon">🕊</div>
+              <div class="subpage-section-title">白鴿 · Dove</div>
+              <div class="world-block-text">神明的孩子們。會飛行在人類世界裡，學習著七情六慾、學習究竟何謂「人」，直至最後羽化成人接過神明的權柄。<br><br>
+              ※ 白鴿身為剛出世的孩子，本源特別脆弱，容易受到影響夭折。</div>
+            </div>
+            <div class="world-block">
+              <div class="world-block-icon">🖤</div>
+              <div class="subpage-section-title">渡鴉 · Raven</div>
+              <div class="world-block-text">神明的孩子之一，因其羽毛不像其他白鴿那樣潔白無瑕而被拋棄。<br>
+              至此，他走上了和神明相反的道路。</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+        <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+        <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+      </footer>
+    </div>
+  </template>
+
+  <!-- ===== STORY HUB PAGE (探索她的故事) ===== -->
+  <template v-if="currentPage === 'story-hub'">
+    <div class="story-hub-page">
+      <div class="story-hub-hero">
+        <div class="story-hub-hero-bg"></div>
+        <div class="story-hub-hero-gradient"></div>
+        <div class="story-hub-hero-content">
+          <span class="subpage-eyebrow">Her Story · 她的故事</span>
+          <h1 class="subpage-title">探 索 她 的 故 事</h1>
+          <p class="subpage-subtitle">選擇一個時期，開始閱讀這個圍繞著她所展開的故事</p>
+        </div>
+      </div>
+      <div class="story-hub-body">
+        <div class="subpage-section-title">故事時期 · Story Arcs</div>
+        <div class="arc-cards">
+          <div class="arc-card" v-for="arc in storyArcs" :key="arc.id" @click="openArcList(arc)">
+            <div class="arc-card-banner" :style="{ background: arc.bannerBg }">
+              <span style="position:relative;z-index:1">{{ arc.icon }}</span>
+            </div>
+            <div class="arc-card-body">
+              <div class="arc-card-label">{{ arc.period }}</div>
+              <div class="arc-card-title">{{ arc.title }}</div>
+              <div class="arc-card-desc">{{ arc.desc }}</div>
+              <div class="arc-card-arrow">閱讀故事 →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+        <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+        <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+      </footer>
+    </div>
+  </template>
+
+  <!-- ===== ARC CHAPTER LIST PAGE ===== -->
+  <template v-if="currentPage === 'arc-list'">
+    <div class="arc-list-page">
+      <button class="arc-list-back" @click="currentPage = 'story-hub'; window.scrollTo({top:0,behavior:'instant'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        返回上一頁
+      </button>
+      <div class="arc-list-hero" v-if="currentArc">
+        <div class="arc-list-hero-bg" :style="{ background: currentArc.heroBg }"></div>
+        <div class="arc-list-hero-gradient"></div>
+        <div class="arc-list-hero-content">
+          <span class="subpage-eyebrow">{{ currentArc.period }}</span>
+          <h1 class="subpage-title">{{ currentArc.title }}</h1>
+          <p class="subpage-subtitle">{{ currentArc.subtitle }}</p>
+        </div>
+      </div>
+      <div class="arc-list-body" v-if="currentArc">
+        <div class="arc-synopsis">
+          <div class="arc-synopsis-label">故事簡述 · Synopsis</div>
+          <div class="arc-synopsis-text">{{ currentArc.synopsis }}</div>
+        </div>
+        <div class="chapter-list-label" id="chapter-list-anchor">章節列表 · Chapters</div>
+        <div class="chapter-items">
+          <div
+            class="chapter-item"
+            v-for="(ch, idx) in currentArc.chapters"
+            :key="idx"
+            @click="openChapter(idx)"
+          >
+            <div class="chapter-item-num">第 {{ idx + 1 }} 章</div>
+            <div class="chapter-item-info">
+              <div class="chapter-item-title">{{ ch.title }}</div>
+              <div class="chapter-item-desc">{{ ch.desc }}</div>
+            </div>
+            <div class="chapter-item-arrow">›</div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+        <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+        <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+      </footer>
+    </div>
+  </template>
+
+  <!-- ===== CHAPTER READER PAGE ===== -->
+   <template v-if="currentPage === 'chapter-reader'">
+  <div class="reader-page" v-if="currentArc && currentChapterIndex !== null">
+    
+    <button class="arc-list-back" @click="currentPage = 'arc-list'; window.scrollTo({top:0,behavior:'instant'})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      返回上一頁
+    </button>
+
+    <div class="reader-hero">
+      <div class="reader-hero-bg" :style="{ background: currentArc.heroBg }"></div>
+      <div class="reader-hero-gradient"></div>
+      <div class="reader-hero-content">
+        <span class="subpage-eyebrow">{{ currentArc.period }} · 第 {{ currentChapterIndex + 1 }} 章</span>
+        <h1 class="subpage-title" style="font-size:clamp(22px,3.5vw,44px)">
+          {{ currentArc.chapters[currentChapterIndex].title }}
+        </h1>
+      </div>
+    </div>
+
+    <div class="reader-body">
+      <div class="reader-text">
+        <p v-for="(para, i) in currentArc.chapters[currentChapterIndex].content" :key="i">
+          {{ para }}
+        </p>
+      </div>
+    </div>
+
+    <div class="reader-nav">
+      <button class="reader-nav-btn"
+        :disabled="currentChapterIndex === 0"
+        @click="openChapter(currentChapterIndex - 1)"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        上一章
+      </button>
+      
+      <button class="reader-nav-toc" @click="tocModalOpen = true">
+        ☰ 目錄
+      </button>
+
+      <button class="reader-nav-btn"
+        :disabled="currentChapterIndex === currentArc.chapters.length - 1"
+        @click="openChapter(currentChapterIndex + 1)"
+      >
+        下一章
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</template>
+
+  <!-- ===== TOC MODAL (Chapter List Popup in Reader) ===== -->
+  <div class="toc-modal-bg" :class="{ open: tocModalOpen }" @click.self="tocModalOpen = false">
+    <div class="toc-modal">
+      <button class="toc-modal-close" @click="tocModalOpen = false">✕</button>
+      <div class="toc-modal-title">☰ 章節目錄</div>
+      <div class="toc-modal-subtitle" v-if="currentArc">{{ currentArc.title }} · {{ currentArc.period }}</div>
+      <div class="toc-chapter-items" v-if="currentArc">
+        <div
+          class="toc-chapter-item"
+          :class="{ active: currentChapterIndex === idx }"
+          v-for="(ch, idx) in currentArc.chapters"
+          :key="idx"
+          @click="openChapter(idx); tocModalOpen = false"
+        >
+          <div class="toc-chapter-num">第 {{ idx + 1 }} 章</div>
+          <div class="toc-chapter-title">{{ ch.title }}</div>
+          <div class="toc-chapter-arrow">›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="worlds-modal-bg" :class="{ open: worldsModalOpen }" @click.self="worldsModalOpen = false">
+    <div class="worlds-modal">
+      <button class="worlds-modal-close" @click="worldsModalOpen = false">✕</button>
+      <div class="worlds-modal-title">✦ 其他小世界</div>
+      <div class="worlds-modal-subtitle">各種AU(Alternate Universe) · 請選擇一個世界，開始探索</div>
+      <div class="worlds-grid">
+        <div class="world-card" v-for="world in smallWorlds" :key="world.id" @click="openWorld(world)">
+          <div class="world-card-icon">{{ world.icon }}</div>
+          <div class="world-card-name">{{ world.name }}</div>
+          <div class="world-card-desc">{{ world.desc }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STORY WORLD PAGE ===== -->
+  <template v-if="currentPage === 'story-world'">
+    <div class="story-world-page">
+      <!-- Back button only (no sidebar/menu) -->
+      <button class="story-world-back" @click="goBack">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        返回上一頁
+      </button>
+
+      <!-- Hero image -->
+      <div class="story-world-hero">
+        <div class="story-world-hero-bg" :style="{ background: currentWorld ? currentWorld.heroBg : '' }"></div>
+        <div class="story-world-hero-gradient"></div>
+        <div class="story-world-hero-content">
+          <span class="subpage-eyebrow">{{ currentWorld ? currentWorld.eyebrow : '' }}</span>
+          <h1 class="subpage-title">{{ currentWorld ? currentWorld.name : '' }}</h1>
+          <p class="subpage-subtitle">{{ currentWorld ? currentWorld.subtitle : '' }}</p>
+        </div>
+      </div>
+
+      <!-- Story content -->
+      <div class="story-world-body">
+        <div class="story-world-text" v-if="currentWorld">
+          <p v-for="(para, i) in currentWorld.story" :key="i">{{ para }}</p>
+        </div>
+      </div>
+
+      <footer>
+        <div class="footer-logo">✦  Remnants of Destiny  ✦</div>
+        <p>斯洛特拉，願妳的一生如夏之燦爛</p>
+        <p class="footer-copyright">© 命運的靜物詩 · Remnants of Destiny &nbsp;｜&nbsp; 本網站屬於 涼麵，侵權必究</p>
+      </footer>
+    </div>
+  </template>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
+<script>
+const { createApp, ref, computed, onMounted, onUnmounted, watch } = Vue;
+
+createApp({
+  setup() {
+    // ===== Page routing =====
+    const currentPage = ref('home'); // 'home' | 'origin' | 'character' | 'worldview' | 'story-world'
+    const previousPage = ref('home');
+
+    function openPage(articleId) {
+      const map = { 1: 'origin', 2: 'character', 3: 'worldview' };
+      previousPage.value = currentPage.value;
+      currentPage.value = map[articleId] || 'home';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function goHome() {
+      previousPage.value = currentPage.value;
+      currentPage.value = 'home';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function goBack() {
+      // When leaving a story-world page, go home and reopen the worlds modal
+      currentPage.value = 'home';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      // Small delay so the home page renders before modal opens
+      setTimeout(() => { worldsModalOpen.value = true; }, 80);
+    }
+
+    // ===== Sub-page sidebar =====
+    const subSidebarOpen = ref(false);
+
+    // ===== TOC Modal (Reader) =====
+    const tocModalOpen = ref(false);
+
+    // ===== Small worlds =====
+    const worldsModalOpen = ref(false);
+    const currentWorld = ref(null);
+
+    const smallWorlds = ref([
+      {
+        id: 'w1', icon: '🌸', name: '春日頌',
+        eyebrow: 'A Springtime Wonder · 春日奇蹟',
+        subtitle: '人生荒蕪，所以春天周而復始。',
+        desc: '一個以「春日奇蹟」為主題所展開的一系列故事',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), linear-gradient(135deg, #2d0a1a, #8a2d5a, #c96a8a)',
+        story: [
+          '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+          ]
+      },
+      {
+        id: 'w2', icon: '🧸', name: '娃娃屋怪談',
+        eyebrow: 'Midnight Dreams · 在午夜入夢',
+        subtitle: '沉入最深的黑暗，方能聽見靈魂的鐘聲。',
+        desc: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), linear-gradient(135deg, #010d1a, #0a3d6b, #1a6ea8)',
+        story: [
+          '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        ]
+      },
+      {
+        id: 'w3', icon: '🎭', name: '娛樂至死',
+        eyebrow: 'Authentic Self · 真實的我',
+        subtitle: '總有一次，我們將重新存在。',
+        desc: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), linear-gradient(135deg, #0a0a1e, #2d1a5a, #4a3a8a)',
+        story: [
+          '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        ]
+      },
+      {
+        id: 'w4', icon: '🍎', name: '七宗罪',
+        eyebrow: 'Paradise Lost · 失樂園',
+        subtitle: '暫定。',
+        desc: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), linear-gradient(135deg, #1a1000, #5a3d00, #8a6000)',
+        story: [
+          '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        ]
+      },
+      {
+        id: 'w5', icon: '🏫', name: '來上個學吧',
+        eyebrow: '暫定',
+        subtitle: '暫定。',
+        desc: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), linear-gradient(135deg, #080d14, #1a2d4a, #2d4a6b)',
+        story: [
+          '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        ]
+      },
+     
+    ]);
+
+    function openWorld(world) {
+      currentWorld.value = world;
+      previousPage.value = currentPage.value;
+      currentPage.value = 'story-world';
+      worldsModalOpen.value = false;
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    // ===== Story Hub =====
+    const currentArc = ref(null);
+    const currentChapterIndex = ref(null);
+
+    // ===== Character Detail =====
+    const currentChar = ref(null);
+    const characters = ref({
+      snotra: {
+        id: 'snotra',
+        name: '斯洛特拉 · Snotra',
+        role: '渡鴉小姐 · 寶石收藏家 · 最後的巴別塔',
+        avatarEmoji: '🌠',
+        avatarBg: 'linear-gradient(135deg, #0a1628, #2d6891)',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)), url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat',
+        stats: [
+          { label: '身分', value: '魔法世家小姐 · 寶石收藏家' },
+          { label: '派系立場', value: 'Raven' },
+          { label: '是否擁有本源', value: '否' },
+          { label: '生日', value: '10.13' },
+          { label: '喜歡', value: '在掌控範圍內的事、古老的收藏品、寶石' },
+          { label: '討厭', value: '髒亂、人擠人、自命清高的人' },
+        ],
+        overview: [
+          '被彌賽亞製作出的，擁有寶石心臟的巴別塔之一，也是目前唯一存活的巴別塔。<br>在數十次的時間倒流之後之後，世界停滯在一個充滿魔法的時代。',
+          '而她的故事，將以此開始敘寫，直至永遠。 '
+        ],
+        traits: ['執著', '坦誠', '自信', '有時會覺得孤獨', '你能……記住我嗎'],
+        personality: [
+          '作為「本不該誕生」的存在，她無比享受活著的過程，儘管過程艱辛，儘管曾經絕望。<br>「那些都是使我成為我的理由」，她是這樣說的。',
+          '受限於時間倒流，斯洛特拉從頭到尾從未被任何人「記住」。每當時間一次又一次倒退，事件就會被重置，人們的選擇、情緒、記憶都被推回原點。無論他們曾如何與她並肩交談，時間倒流後的他們都會再次把她視為陌生人。<br>她活在無盡的孤獨之中。也因此，她格外在意那些能陪伴她至今的夥伴們。',
+        ],
+        abilities: [
+          { name: '本源侵蝕', desc: '作為無本源之人，會在無意識間侵蝕周圍人的本源。' },
+          { name: '時間魔法', desc: '唯一會的魔法，能透過詠唱、書寫符文，來讓東西、概念不被時間影響(ex.對一個人施魔法的話，那個人將一輩子都不會變老，換句話說，他已經被拉出時間之外了)。幾乎無法使用，使用的話容易引來白鴿的注視，沒有人知道那將發生什麼。' },
+        ],
+        relations: [
+          { icon: '🐦‍⬛', name: '渡鴉先生', role: '默契十足的夥伴 · 重要的存在' },
+          { icon: '🪄', name: '仸萊爾', role: '意外出現在生活中的人 · 要好好保護的存在' },
+          { icon: '⚗️', name: '彌賽亞', role: '誕生地 · 不知道該感謝還是厭恨' },
+          { icon: '🕊️', name: '白鴿', role: '討厭的東西' },
+        ],
+      },
+      folael: {
+        id: 'folael',
+        name: '仸萊爾 · Folael',
+        role: '執事 · 魔法師 · 最忠誠的信徒',
+        avatarEmoji: '🪄',
+        avatarBg: 'linear-gradient(135deg, #1a0d28, #6e2d8a)',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), linear-gradient(135deg, #1a0d28, #6e2d8a)',
+        stats: [
+          { label: '身分', value: '執事 · 魔法師' },
+          { label: '派系立場', value: '無' },
+          { label: '是否擁有本源', value: '是，已被影響' },
+          { label: '生日', value: '4.04' },
+          { label: '喜歡', value: '自己的臉、大小姐、魔法相關研究' },
+          { label: '討厭', value: '髒亂、沒禮貌的人' },
+        ],
+        overview:  [
+          '（角色還在建構中，敬請期待！）',
+        ],
+        traits: ['溫柔？', '忠誠', '自戀', '萬能', '愛慕？信仰？', '大小姐今天想喝什麼茶'],
+        personality: [
+          '看似是一位有禮貌的紳士，然而實際上有著一套獨屬於自己的「暴力美學」，曾經舉著沾滿血跡的拳頭對大小姐燦笑道:「您知道嗎，這東西比魔法好用多了^ ^」。最後因為太敗壞名聲而改成用魔法解決事情居多。',
+          '對大小姐展現出近乎偏執的愛慕，在雙方都明知的情況下仍不求回應，默默地在背後支持她的一切決定。',
+        ],
+        abilities: [
+          { name: '魔法', desc: '魔法天賦非常高。' },
+        ],
+        relations: [
+          { icon: '🌠', name: '斯洛特拉 · Snotra', role: '最重要的人 · 願意付出身心乃至生命的對象' },
+          { icon: '🐦‍⬛', name: '渡鴉先生', role: '你一定要一直跟在大小姐身邊嗎' },
+        ],
+      },
+      raven: {
+       id: 'raven',
+        name: '渡鴉先生',
+        role: '神之子 · 被遺棄的孩子',
+        avatarBg: 'url(https://cdn.phototourl.com/free/2026-04-19-df7f32cc-cdd8-4a79-8415-74f4fb6d1719.jpg) center/cover no-repeat',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url(https://cdn.phototourl.com/free/2026-04-19-df7f32cc-cdd8-4a79-8415-74f4fb6d1719.jpg) center/cover no-repeat',
+        stats: [
+          { label: '身分', value: '神之子' },
+          { label: '派系立場', value: 'Raven' },
+          { label: '是否擁有本源', value: '是' },
+          { label: '生日', value: '不明' },
+          { label: '喜歡', value: '認真活著的人、斯洛特拉' },
+          { label: '討厭', value: '過度仰賴信仰的人' },
+        ],
+        overview: [
+          '（角色還在建構中，敬請期待！）',
+        ],
+        traits: ['面對喜歡的人會很溫柔', '執著於人性', '喜歡惡作劇', '我會飛你打不到我'],
+        personality: [
+          '（角色還在建構中，敬請期待！）',
+        ],
+        abilities: [
+          { name: '神性', desc: '身為神之子，保有部分神的權柄。' },
+        ],
+        relations: [
+          { icon: '🌠', name: '斯洛特拉 · Snotra', role: '命運交織 · 重要的人' },
+          { icon: '🕊️', name: '白鴿', role: '手足' },
+          {icon: '🪄', name: '仸萊爾', role: '喜歡捉弄的對象' },
+        ],
+      },
+      aelara: {
+        id: 'aelara',
+        name: '艾拉雅 · Aelara',
+        role: '最初的無本源之物 · 占卜師 · 觀察者',
+        avatarBg: 'url(https://cdn.phototourl.com/free/2026-04-16-f971c9eb-9097-4ae9-86e3-2280de361a1d.jpg) center/cover no-repeat',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(https://cdn.phototourl.com/free/2026-04-16-f971c9eb-9097-4ae9-86e3-2280de361a1d.jpg) center/cover no-repeat',
+        stats: [
+          { label: '身分', value: '占卜師' },
+          { label: '派系立場', value: '不明' },
+          { label: '是否擁有本源', value: '否' },
+          { label: '生日', value: '7.31' },
+          { label: '喜歡', value: '歡樂友善的氛圍' },
+          { label: '討厭', value: '太叫真的人、大太陽' },
+        ],
+       overview: [
+        '和這個世界一起誕生的、最初的「無本源之物」。<br>沒有本源的她不清楚自己存在的意義、以及該往何處而去，於是間接創造了「巴別塔」，想看看這些和她一樣的人要如何面對生命、看待世界。',
+        `<blockquote class="quote-block" style="font-style: normal;">
+          ✦ 她先是引導東邊的科學家前往西之國做實驗。<br>
+          ✦ 再意外的讓他們發現富有魔法的寶石礦脈。<br>
+          ✦ 最後藉由自己「無本源」的體質，讓科學家們逐漸偏離他們最初的本源 —— 最終跨越禁忌，創造了生命。
+          </blockquote>`,
+
+          '可令她沒想到的是，世界不允許這種事發生。<br>時間倒流後，創造的 13 個巴別塔只剩下了一個。但值得慶幸的是，這是一個不死的孩子 —— 斯洛特拉。<br>於是她繼續觀察，看著她受過苦難、不斷的再次爬起，看著她身邊逐漸有了夥伴……不知何時，艾拉雅早已身陷在斯洛特拉的故事中了。而當她回過神來，她已經加入了這個故事，成為了一個小小的占卜師。',
+          `<blockquote class="quote-block" style="font-style: normal;">
+            ✧ 眼前的世界好似不再迷惘，生命的意義好似早已浮出水面。<br>
+            ✧ 謝謝你，斯洛特拉，我的孩子。
+            </blockquote>`
+          ],
+        quote: '',
+        traits: [ '隨性', '不可捉摸', '惡趣味', '蹦出來下你一跳'],
+        personality: [
+          '一個行蹤飄忽、難以約束的占卜師，喜歡在閒暇之餘隨機惡整找他占卜的人，包括但不限於 : 幫你占卜你父母的性別、升級vip解鎖占卜後續……等等。',
+          '對所有事情都保持著一種「旁觀者」的態度，甚至包括她自己。以至於讓人難以判斷，在她帶著笑意的表情背後，究竟有多少情感是真實的。',
+        ],
+    
+        relations: [
+          { icon: '🌠', name: '斯洛特拉 · Snotra', role: '間接創造的存在' },
+          { icon: '⚗️', name: '彌賽亞', role: '受到艾拉雅無本源體質影響，決定對神明的一切行為進行研究的科學家所建立的組織' },
+        ],
+      },
+    });
+
+    function openCharDetail(charId) {
+      currentChar.value = characters.value[charId] || null;
+      currentPage.value = 'char-detail';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function openStoryHub() {
+      currentPage.value = 'story-hub';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function openArcList(arc) {
+      currentArc.value = arc;
+      currentPage.value = 'arc-list';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function openChapter(idx) {
+      currentChapterIndex.value = idx;
+      currentPage.value = 'chapter-reader';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    const storyArcs = ref([
+      {
+        id: 'early', icon: '🌱', period: 'One Person · 一個人',
+        title: '前 期 故 事',
+        subtitle: '逆時針的呼吸。',
+        desc: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        bannerBg: 'linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #2d6891 100%)',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat',
+        synopsis: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        chapters: [
+          { title: '對不起', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '但是我', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '還沒', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '開始寫', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+        ]
+      },
+      {
+        id: 'mid', icon: '⚡', period: 'Destination · 歸宿',
+        title: '中 期 故 事',
+        subtitle: '暫定。',
+        desc: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        bannerBg: 'linear-gradient(135deg, #2d0a4a 0%, #6e2d8a 50%, #9a4ab0 100%)',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), url(https://cdn.phototourl.com/free/2026-04-09-5c8f6fdd-7d77-4d6e-98f3-019b336fd757.jpg) center/cover no-repeat',
+        synopsis: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        chapters: [
+          { title: '對不起', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '但是我', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '還沒', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '開始寫', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+        ]
+      },
+      {
+        id: 'late', icon: '🌑', period: 'Forever · 永遠',
+        title: '後 期 故 事',
+        subtitle: '暫定。',
+        desc: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        bannerBg: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #2d2d4a 100%)',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)), url(https://cdn.phototourl.com/free/2026-04-09-fd5e6c1c-675b-48b6-b175-8493aae4ba84.jpg) center/cover no-repeat',
+        synopsis: '（詳細背景故事尚在建構中，更多設定將於後續揭曉。）',
+        chapters: [
+          { title: '對不起', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '但是我', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '還沒', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+          { title: '開始寫', desc: '暫定。', content: ['（詳細故事尚在建構中，更多設定將於後續揭曉。）'] },
+        ]
+      },
+    ]);
+
+    // ===== Home page state =====
+    const showBackTop = ref(false);
+    const sidebarOpen = ref(false);
+    const activeSection = ref('hero'); 
+
+    const handleScroll = () => {
+      showBackTop.value = window.scrollY > 300;
+    };
+
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    function navTo(section) {
+      activeSection.value = section;
+      const el = document.getElementById(section);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+      setTimeout(() => sidebarOpen.value = false, 200);
+    }
+
+    const currentSlide = ref(0);
+    const slides = ref([
+      {
+        tag: 'Origin · 起源',
+        title: '身 體 之 初 時 間 之 末',
+        desc: '在時間的邊境，她睜開了雙眼。',
+        bg: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat',
+      },
+      {
+        tag: 'Journey · 旅途',
+        title: '背 離 死 亡 贖 以 永 恆',
+        desc: '向前走，走向人間。',
+        bg: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),url(https://cdn.phototourl.com/free/2026-04-09-5c8f6fdd-7d77-4d6e-98f3-019b336fd757.jpg) center/cover no-repeat',
+      },
+      {
+        tag: 'Timeless · 永存',
+        title: '命 運 將 以 靜 物 永 存',
+        desc: '在結局到來之前，一切都值得期待。',
+        bg: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(https://cdn.phototourl.com/free/2026-04-09-fd5e6c1c-675b-48b6-b175-8493aae4ba84.jpg) center/cover no-repeat',
+      },
+    ]);
+
+    let slideTimer = null;
+    function startTimer() { slideTimer = setInterval(() => nextSlide(), 5500); }
+    function resetTimer() { clearInterval(slideTimer); startTimer(); }
+    function nextSlide() { currentSlide.value = (currentSlide.value + 1) % slides.value.length; }
+    function prevSlide() { currentSlide.value = (currentSlide.value - 1 + slides.value.length) % slides.value.length; }
+    function goToSlide(i) { currentSlide.value = i; resetTimer(); }
+
+    // ===== Articles =====
+    const articles = ref([
+      { id: 1, title: '一切的起源', category: 'origin', excerpt: '過去存在於未來中，而未來亦在過去裡', emoji: '🌌', color: 'linear-gradient(135deg, #0a1628, #2d6891)', },
+      { id: 2, title: '角色介紹', category: 'character', excerpt: '於千萬人之中，遇見你要遇見的人', emoji: '🌙', color: 'linear-gradient(135deg, #1a0d28, #6e2d8a)', },
+      { id: 3, title: '世界觀設定', category: 'worldview', excerpt: '關於世界觀的運行規則', emoji: '🗺️', color: 'linear-gradient(135deg, #0d1f0d, #2d6e50)', },
+    ]);
+
+    const activeTag = ref('');
+    const allTags = computed(() => {
+      const tags = new Set();
+      articles.value.forEach(a => (a.tags || []).forEach(t => tags.add(t)));
+      return Array.from(tags);
+    });
+    const filteredArticles = computed(() => {
+      return articles.value.filter(a => !activeTag.value || (a.tags || []).includes(activeTag.value));
+    });
+    function filterTag(tag) { activeTag.value = activeTag.value === tag ? '' : tag; }
+
+    // Re-init fade-ins when returning home
+    watch(currentPage, (val) => {
+      if (val === 'home') {
+        setTimeout(() => {
+          const els = document.querySelectorAll('.fade-in');
+          const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+          }, { threshold: 0.1 });
+          els.forEach(el => obs.observe(el));
+        }, 50);
+      }
+    });
+
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll); 
+      startTimer();
+      const els = document.querySelectorAll('.fade-in');
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+      }, { threshold: 0.1 });
+      els.forEach(el => obs.observe(el));
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(slideTimer);
+    });
+
+    return {
+      currentPage, openPage, goHome, goBack,
+      showBackTop, scrollToTop,
+      sidebarOpen, subSidebarOpen, activeSection, navTo,
+      currentSlide, slides,
+      nextSlide, prevSlide, goToSlide,
+      articles, filteredArticles,
+      filterTag, allTags, activeTag,
+      worldsModalOpen, smallWorlds, currentWorld, openWorld,
+      storyArcs, currentArc, currentChapterIndex,
+      openStoryHub, openArcList, openChapter,
+      currentChar, characters, openCharDetail,
+      tocModalOpen,
+    };
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
