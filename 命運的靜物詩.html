@@ -800,7 +800,7 @@
     }
     .story-world-text {
       font-family: 'Noto Serif SC', serif;
-      font-size: 15px; line-height: 2.1;
+      font-size: 16px; line-height: 2.1;
       color: var(--text-secondary);
     }
     .story-world-text p { margin-bottom: 24px; }
@@ -832,6 +832,15 @@
       font-family: 'Cinzel Decorative', serif;
       font-size: 18px; color: var(--accent);
       margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+    }
+    .subpage-section-title::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    /* 只有「一切的起源」頁面的小標有漸變設計 */
+    .origin-page .subpage-section-title {
       position: relative;
       padding: 10px 20px 10px 16px;
       border-radius: 8px;
@@ -839,19 +848,18 @@
       border-left: 3px solid var(--accent);
       overflow: hidden;
     }
-    .subpage-section-title::before {
+    .origin-page .subpage-section-title::before {
       content: '';
       position: absolute; inset: 0;
       background: linear-gradient(90deg, rgba(102,169,201,0.08) 0%, transparent 100%);
       pointer-events: none;
     }
-    .subpage-section-title::after {
+    .origin-page .subpage-section-title::after {
       content: '';
       flex: 1; height: 1px;
       background: linear-gradient(90deg, var(--accent-light), transparent);
       opacity: 0.4;
     }
-
     .subpage-text {
       font-family: 'Noto Serif SC', serif;
       font-size: 16px; line-height: 2;
@@ -1015,6 +1023,29 @@
       .subpage-hero-content { padding: 40px 28px; }
       .subpage-body { padding: 50px 20px 60px; }
       .subpage-top-btn { font-size: 10px; padding: 8px 14px; }
+
+      /* Hero 高度手機版縮短 */
+      .hero {
+        height: 60vh;
+        min-height: 380px;
+        max-height: 560px;
+      }
+
+      /* 文字內容往下推，留空間給按鈕 */
+      .slide-content {
+        padding: 24px 24px 80px;
+        max-width: 100%;
+      }
+      .slide-title { font-size: clamp(20px, 6vw, 32px); margin-bottom: 10px; }
+      .slide-desc { font-size: 13px; max-width: 100%; }
+      .slide-tag { font-size: 9px; margin-bottom: 10px; }
+
+      /* 切換按鈕維持右下角 */
+      .carousel-controls {
+        right: 20px;
+        bottom: 24px;
+        left: auto;
+      }
     }
 
     /* ===== Story Hub Page ===== */
@@ -1061,7 +1092,7 @@
     }
     .arc-card-body { padding: 20px 24px 28px; }
     .arc-card-label { font-family: 'Cinzel Decorative', serif; font-size: 9px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
-    .arc-card-title { font-family: 'Cinzel Decorative', serif; font-size: 15px; color: var(--text-primary); margin-bottom: 10px; }
+    .arc-card-title { font-family: 'Cinzel Decorative', serif; font-size: 16px; color: var(--text-primary); margin-bottom: 10px; }
     .arc-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
     .arc-card-arrow { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font-size: 12px; color: var(--accent); font-family: 'Cinzel Decorative', serif; }
 
@@ -1280,7 +1311,7 @@
       content: ''; flex: 1; height: 1px; background: var(--border);
     }
     .char-detail-text {
-      font-family: 'Noto Serif SC', serif; font-size: 15px;
+      font-family: 'Noto Serif SC', serif; font-size: 16px;
       line-height: 2.1; color: var(--text-secondary);
     }
     .char-detail-text p { margin-bottom: 18px; }
@@ -1329,6 +1360,66 @@
       .char-detail-hero-content { flex-direction: column; align-items: flex-start; gap: 16px; padding: 36px 24px; }
       .char-detail-body { padding: 40px 20px 80px; }
       .char-stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===== 手機版全域修正 ===== */
+    @media (max-width: 768px) {
+
+      /* 首頁輪播：隱藏 SCROLL 提示，切換按鈕回右下角 */
+      .scroll-hint { display: none; }
+      .carousel-controls {
+        left: auto;
+        right: 20px;
+        bottom: 24px;
+      }
+
+      /* 所有子頁面 hero 圖片縮短 */
+      .subpage-hero {
+        height: 45vh;
+        min-height: 260px;
+        max-height: 420px;
+      }
+      .story-hub-hero {
+        height: 42vh;
+        min-height: 240px;
+        max-height: 380px;
+      }
+      .arc-list-hero {
+        height: 38vh;
+        min-height: 220px;
+        max-height: 340px;
+      }
+      .reader-hero {
+        height: 34vh;
+        min-height: 200px;
+        max-height: 300px;
+      }
+      .char-detail-hero {
+        height: 45vh;
+        min-height: 260px;
+        max-height: 420px;
+      }
+      .story-world-hero {
+        height: 42vh;
+        min-height: 240px;
+        max-height: 380px;
+      }
+
+      /* 子頁面內容 padding 收緊 */
+      .subpage-hero-content,
+      .story-hub-hero-content,
+      .arc-list-hero-content,
+      .reader-hero-content,
+      .story-world-hero-content { padding: 28px 20px; }
+
+      .subpage-title { font-size: clamp(22px, 6vw, 36px); }
+      .subpage-subtitle { font-size: 13px; }
+
+      /* 角色介紹：單欄直排，維持上圖下文 */
+      .char-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
     }
   </style>
 </head>
@@ -1575,7 +1666,7 @@
     </button>
 
     <!-- ===== ORIGIN PAGE ===== -->
-<div v-if="currentPage === 'origin'">
+<div v-if="currentPage === 'origin'" class="origin-page">
   <div class="subpage-hero loaded">
     <div class="subpage-hero-bg" style="background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat;"></div>
     <div class="subpage-hero-gradient"></div>
@@ -1891,13 +1982,13 @@
             </div>
 
             <div class="world-block">
-              <div class="world-block-icon">🕊</div>
+              <div class="world-block-icon">🕊️</div>
               <div class="subpage-section-title">白鴿 · Dove</div>
               <div class="world-block-text">神明的孩子們。會飛行在人類世界裡，學習著七情六慾、學習究竟何謂「人」，直至最後羽化成人接過神明的權柄。<br><br>
               ※ 白鴿身為剛出世的孩子，本源特別脆弱，容易受到影響夭折。</div>
             </div>
             <div class="world-block">
-              <div class="world-block-icon">🖤</div>
+              <div class="world-block-icon">🐦‍⬛</div>
               <div class="subpage-section-title">渡鴉 · Raven</div>
               <div class="world-block-text">神明的孩子之一，因其羽毛不像其他白鴿那樣潔白無瑕而被拋棄。<br>
               至此，他走上了和神明相反的道路。</div>
@@ -2256,7 +2347,7 @@ createApp({
         ],
         overview: [
           '被彌賽亞製作出的，擁有寶石心臟的巴別塔之一，也是目前唯一存活的巴別塔。<br>在數十次的時間倒流之後之後，世界停滯在一個充滿魔法的時代。',
-          '而她的故事，將以此開始敘寫，直至永遠。 '
+          '而她的故事將以此開始敘寫，直至永遠。 '
         ],
         traits: ['執著', '坦誠', '自信', '有時會覺得孤獨', '你能……記住我嗎'],
         personality: [
