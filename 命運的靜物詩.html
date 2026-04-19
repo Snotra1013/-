@@ -352,7 +352,7 @@
 
     /* ===== Story Section ===== */
     .story-section {
-      padding: 100px 0; position: relative; overflow: hidden;
+      padding: 100px 0 40px; position: relative; overflow: hidden;
     }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
     .section-eyebrow {
@@ -426,7 +426,7 @@
     /* ===== Divider ===== */
     .divider {
       display: flex; align-items: center; gap: 20px;
-      margin: 80px 0 60px;
+      margin: 80px 0 30px;
     }
     .divider-line { flex: 1; height: 1px; background: var(--border); }
     .divider-icon {
@@ -436,7 +436,7 @@
     }
 
     /* ===== Articles ===== */
-    .articles-section { padding: 60px 0 100px; }
+    .articles-section { padding: 0px 0 80px; }
     .articles-header {
       display: flex; align-items: flex-end;
       justify-content: space-between; margin-bottom: 48px;
@@ -519,7 +519,7 @@
     /* ===== Footer ===== */
     footer {
       border-top: 1px solid var(--border);
-      padding: 48px 40px; text-align: center;
+      padding: 28px 40px; text-align: center;
     }
     footer .footer-logo {
       font-family: 'Cinzel Decorative', serif;
@@ -622,10 +622,10 @@
       top: 18px; left: 20px;
       z-index: 300;
       display: flex; align-items: center; gap: 8px;
-      background: rgba(13,17,23,0.65);
+      background: rgba(13,17,23,0.28);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(102,169,201,0.3);
-      color: #fff;
+      border: 1px solid rgba(102,169,201,0.22);
+      color: rgba(255,255,255,0.82);
       font-family: 'Cinzel Decorative', serif;
       font-size: 11px; letter-spacing: 0.1em;
       padding: 9px 18px; border-radius: 30px;
@@ -779,10 +779,10 @@
     .story-world-back {
       position: fixed; top: 18px; left: 20px; z-index: 300;
       display: flex; align-items: center; gap: 8px;
-      background: rgba(13,17,23,0.65);
+      background: rgba(13,17,23,0.28);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(102,169,201,0.3);
-      color: #fff;
+      border: 1px solid rgba(102,169,201,0.22);
+      color: rgba(255,255,255,0.82);
       font-family: 'Cinzel Decorative', serif;
       font-size: 11px; letter-spacing: 0.1em;
       padding: 9px 18px; border-radius: 30px;
@@ -800,7 +800,7 @@
     }
     .story-world-text {
       font-family: 'Noto Serif SC', serif;
-      font-size: 16px; line-height: 2.1;
+      font-size: 15px; line-height: 2.1;
       color: var(--text-secondary);
     }
     .story-world-text p { margin-bottom: 24px; }
@@ -832,11 +832,24 @@
       font-family: 'Cinzel Decorative', serif;
       font-size: 18px; color: var(--accent);
       margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+      position: relative;
+      padding: 10px 20px 10px 16px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, rgba(102,169,201,0.18) 0%, rgba(102,169,201,0.06) 60%, transparent 100%);
+      border-left: 3px solid var(--accent);
+      overflow: hidden;
+    }
+    .subpage-section-title::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(102,169,201,0.08) 0%, transparent 100%);
+      pointer-events: none;
     }
     .subpage-section-title::after {
       content: '';
       flex: 1; height: 1px;
-      background: var(--border);
+      background: linear-gradient(90deg, var(--accent-light), transparent);
+      opacity: 0.4;
     }
 
     .subpage-text {
@@ -1048,7 +1061,7 @@
     }
     .arc-card-body { padding: 20px 24px 28px; }
     .arc-card-label { font-family: 'Cinzel Decorative', serif; font-size: 9px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
-    .arc-card-title { font-family: 'Cinzel Decorative', serif; font-size: 16px; color: var(--text-primary); margin-bottom: 10px; }
+    .arc-card-title { font-family: 'Cinzel Decorative', serif; font-size: 15px; color: var(--text-primary); margin-bottom: 10px; }
     .arc-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
     .arc-card-arrow { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font-size: 12px; color: var(--accent); font-family: 'Cinzel Decorative', serif; }
 
@@ -1067,8 +1080,8 @@
     .arc-list-back {
       position: fixed; top: 18px; left: 20px; z-index: 300;
       display: flex; align-items: center; gap: 8px;
-      background: rgba(13,17,23,0.65); backdrop-filter: blur(14px);
-      border: 1px solid rgba(102,169,201,0.3); color: #fff;
+      background: rgba(13,17,23,0.28); backdrop-filter: blur(14px);
+      border: 1px solid rgba(102,169,201,0.22); color: rgba(255,255,255,0.82);
       font-family: 'Cinzel Decorative', serif; font-size: 11px; letter-spacing: 0.1em;
       padding: 9px 18px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
     }
@@ -1248,8 +1261,8 @@
     .char-detail-back {
       position: fixed; top: 18px; left: 20px; z-index: 300;
       display: flex; align-items: center; gap: 8px;
-      background: rgba(13,17,23,0.65); backdrop-filter: blur(14px);
-      border: 1px solid rgba(102,169,201,0.3); color: #fff;
+      background: rgba(13,17,23,0.28); backdrop-filter: blur(14px);
+      border: 1px solid rgba(102,169,201,0.22); color: rgba(255,255,255,0.82);
       font-family: 'Cinzel Decorative', serif; font-size: 11px; letter-spacing: 0.1em;
       padding: 9px 18px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
     }
@@ -1267,7 +1280,7 @@
       content: ''; flex: 1; height: 1px; background: var(--border);
     }
     .char-detail-text {
-      font-family: 'Noto Serif SC', serif; font-size: 16px;
+      font-family: 'Noto Serif SC', serif; font-size: 15px;
       line-height: 2.1; color: var(--text-secondary);
     }
     .char-detail-text p { margin-bottom: 18px; }
