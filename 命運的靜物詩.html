@@ -1458,8 +1458,8 @@
 
     <div style="margin-top: 20px"></div>
     <div class="nav-section-title">主要故事</div>
-    <a class="nav-item" @click="openStoryHub(); subSidebarOpen = false"> <span class="nav-icon">✨</span> 探索她的故事</a>
-   <a class="nav-item" @click="worldsModalOpen = true; subSidebarOpen = false"> <span class="nav-icon">🌍</span> 前往其他小世界</a>
+    <a class="nav-item" @click="openStoryHub(); sidebarOpen = false; subSidebarOpen = false"> <span class="nav-icon">✨</span> 探索她的故事</a>
+   <a class="nav-item" @click="worldsModalOpen = true; sidebarOpen = false; subSidebarOpen = false"> <span class="nav-icon">🌍</span> 前往其他小世界</a>
     </div>
   </nav>
   <div class="sidebar-footer">
@@ -2021,9 +2021,6 @@
         <div class="subpage-section-title">故事時期 · Story Arcs</div>
         <div class="arc-cards">
           <div class="arc-card" v-for="arc in storyArcs" :key="arc.id" @click="openArcList(arc)">
-            <div class="arc-card-banner" :style="{ background: arc.bannerBg }">
-              <span style="position:relative;z-index:1">{{ arc.icon }}</span>
-            </div>
             <div class="arc-card-body">
               <div class="arc-card-label">{{ arc.period }}</div>
               <div class="arc-card-title">{{ arc.title }}</div>
