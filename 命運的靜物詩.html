@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-TW" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
-    /* ===== CSS Variables ===== */
+    /* ===== CSS 變數 ===== */
     :root {
       --accent: #66a9c9;
       --accent-dark: #4a8aab;
@@ -122,7 +122,7 @@
   line-height: 1.6;
 }
 
-    /* ===== Reset ===== */
+    /* ===== 基礎重置 ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -134,12 +134,12 @@
       overflow-x: hidden;
     }
 
-    /* ===== Scrollbar ===== */
+    /* ===== 捲軸樣式 ===== */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
-    /* ===== Overlay Backdrop ===== */
+    /* ===== 遮罩背景 ===== */
     .sidebar-backdrop {
       position: fixed; inset: 0; z-index: 99;
       background: var(--overlay);
@@ -149,7 +149,7 @@
     }
     .sidebar-backdrop.active { opacity: 1; pointer-events: all; }
 
-    /* ===== Sidebar ===== */
+    /* ===== 側邊目錄 ===== */
     .sidebar {
       position: fixed; top: 0; left: 0; z-index: 100;
       width: var(--sidebar-w); height: 100vh;
@@ -217,7 +217,7 @@
       text-align: center; letter-spacing: 0.06em;
     }
 
-    /* ===== Topbar ===== */
+    /* ===== 頂部導覽列 ===== */
     .topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 50;
       height: var(--nav-h);
@@ -248,10 +248,10 @@
       color: var(--accent); white-space: nowrap;
     }
 
-    /* ===== Main Content ===== */
+    /* ===== 主內容區 ===== */
     .main { padding-top: var(--nav-h); }
 
-    /* ===== Hero Carousel ===== */
+    /* ===== 首頁輪播圖 ===== */
     .hero {
       position: relative;
   height: 85vh; 
@@ -307,7 +307,7 @@
       line-height: 1.7; max-width: 480px;
     }
 
-    /* Carousel Controls */
+    /* 輪播控制按鈕 */
     .carousel-controls {
       position: absolute; bottom: 40px; right: 80px;
       z-index: 10; display: flex; align-items: center; gap: 12px;
@@ -335,7 +335,7 @@
       background: var(--accent);
     }
 
-    /* Scroll hint */
+    /* 向下滾動提示 */
     .scroll-hint {
       position: absolute; bottom: 28px; left: 50%;
       transform: translateX(-50%); z-index: 10;
@@ -350,9 +350,9 @@
     }
     @keyframes scrollPulse { 0%,100%{opacity:0.3; transform:scaleY(0.7)} 50%{opacity:1; transform:scaleY(1)} }
 
-    /* ===== Story Section ===== */
+    /* ===== 引言區塊 ===== */
     .story-section {
-      padding: 100px 0; position: relative; overflow: hidden;
+      padding: 100px 0 40px; position: relative; overflow: hidden;
     }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
     .section-eyebrow {
@@ -423,10 +423,10 @@
       color: var(--accent); background: var(--accent-glow);
     }
 
-    /* ===== Divider ===== */
+    /* ===== 分隔線 ===== */
     .divider {
       display: flex; align-items: center; gap: 20px;
-      margin: 80px 0 10px;
+      margin: 80px 0 30px;
     }
     .divider-line { flex: 1; height: 1px; background: var(--border); }
     .divider-icon {
@@ -435,8 +435,8 @@
       letter-spacing: 0.15em; white-space: nowrap;
     }
 
-    /* ===== Articles ===== */
-    .articles-section { padding: 0px 0 20px; }
+    /* ===== 文章卡片區 ===== */
+    .articles-section { padding: 0px 0 80px; }
     .articles-header {
       display: flex; align-items: flex-end;
       justify-content: space-between; margin-bottom: 48px;
@@ -508,15 +508,7 @@
       background: var(--accent-glow); color: var(--accent); border: 1px solid var(--border);
     }
 
-    /* No results */
-    .no-results {
-      grid-column: 1/-1; text-align: center; padding: 80px 0;
-      color: var(--text-muted);
-    }
-    .no-results-icon { font-size: 48px; margin-bottom: 16px; }
-    .no-results-text { font-size: 14px; }
-
-    /* ===== Footer ===== */
+    /* ===== 頁尾 ===== */
     footer {
       border-top: 1px solid var(--border);
       padding: 28px 40px; text-align: center;
@@ -537,14 +529,14 @@
       margin-top: 10px;
     }
 
-    /* ===== Fade-in animations ===== */
+    /* ===== 進場動畫 ===== */
     .fade-in {
       opacity: 0; transform: translateY(28px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ===== Page Transitions ===== */
+    /* ===== 頁面切換動畫 ===== */
     .page-view {
       position: fixed; inset: 0;
       background: var(--bg);
@@ -561,7 +553,7 @@
       pointer-events: all;
     }
 
-    /* ===== Sub-page Hero ===== */
+    /* ===== 子頁面大圖標題 ===== */
     .subpage-hero {
       position: relative;
       width: 100%;
@@ -616,7 +608,7 @@
       line-height: 1.7;
     }
 
-    /* ===== Sub-page Top-left Button (menu or back) ===== */
+    /* ===== 子頁面返回／選單按鈕 ===== */
     .subpage-top-btn {
       position: fixed;
       top: 18px; left: 20px;
@@ -649,7 +641,7 @@
       background: currentColor; border-radius: 1px;
     }
 
-    /* ===== Section Extra Buttons ===== */
+    /* ===== 區塊底部按鈕群 ===== */
     .section-extra-btns {
       display: flex; justify-content: center; gap: 16px;
       padding: 32px 40px 0;
@@ -682,7 +674,7 @@
       background: var(--accent-dark);
     }
 
-    /* ===== Small Worlds Modal ===== */
+    /* ===== 其他小世界彈窗 ===== */
     .worlds-modal-bg {
       position: fixed; inset: 0; z-index: 500;
       background: rgba(0,0,0,0.75);
@@ -752,7 +744,7 @@
     }
     .world-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
-    /* ===== Story World Page ===== */
+    /* ===== 小世界故事頁面 ===== */
     .story-world-page {
       min-height: 100vh;
       background: var(--bg);
@@ -1142,7 +1134,7 @@
       .reader-nav-toc { padding: 7px 14px; font-size: 10px; }
     }
 
-    /* ===== TOC Modal (Chapter List Popup) ===== */
+    /* ===== 章節目錄彈窗（閱讀器內） ===== */
     .toc-modal-bg {
       position: fixed; inset: 0; z-index: 500;
       background: rgba(0,0,0,0.65);
@@ -1196,7 +1188,7 @@
     .toc-chapter-title { flex: 1; font-size: 14px; color: var(--text-primary); }
     .toc-chapter-arrow { color: var(--accent); font-size: 16px; }
 
-    /* ===== Character Card Clickable ===== */
+    /* ===== 角色卡片（可點擊） ===== */
     .char-profile-card {
       cursor: pointer;
       transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
@@ -1328,9 +1320,7 @@
       transition: opacity 0.5s ease;
       padding: 20px;
     }
-    .welcome-backdrop.open {
-      opacity: 1; pointer-events: all;
-    }
+    .welcome-backdrop.open { opacity: 1; pointer-events: all; }
     .welcome-modal {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -1343,51 +1333,31 @@
       transform: translateY(28px) scale(0.96);
       transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .welcome-backdrop.open .welcome-modal {
-      transform: translateY(0) scale(1);
-    }
+    .welcome-backdrop.open .welcome-modal { transform: translateY(0) scale(1); }
     .welcome-modal-deco {
       width: 100%; height: 6px;
       background: linear-gradient(90deg, var(--accent-dark), var(--accent), var(--accent-light));
       border-radius: 28px 28px 0 0;
     }
-    .welcome-modal-body {
-      padding: 40px 44px 44px;
-    }
-    .welcome-modal-icon {
-      font-size: 36px; margin-bottom: 10px;
-      display: block; text-align: center;
-    }
+    .welcome-modal-body { padding: 40px 44px 44px; }
+    .welcome-modal-icon { font-size: 36px; margin-bottom: 10px; display: block; text-align: center; }
     .welcome-modal-title {
       font-family: 'Cinzel Decorative', serif;
       font-size: 18px; color: var(--accent);
-      text-align: center; margin-bottom: 4px;
-      letter-spacing: 0.08em;
+      text-align: center; margin-bottom: 4px; letter-spacing: 0.08em;
     }
     .welcome-modal-subtitle {
       font-size: 12px; color: var(--text-muted);
-      text-align: center; letter-spacing: 0.12em;
-      margin-bottom: 32px;
+      text-align: center; letter-spacing: 0.12em; margin-bottom: 32px;
       font-family: 'Cinzel Decorative', serif;
     }
-    .welcome-divider {
-      height: 1px; background: var(--border);
-      margin: 24px 0;
-    }
-    .welcome-qa-list {
-      display: flex; flex-direction: column; gap: 20px;
-    }
+    .welcome-qa-list { display: flex; flex-direction: column; gap: 20px; }
     .welcome-qa {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px 22px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 18px 22px;
       transition: border-color 0.25s, box-shadow 0.25s;
     }
-    .welcome-qa:hover {
-      border-color: var(--accent);
-      box-shadow: 0 4px 20px var(--shadow);
-    }
+    .welcome-qa:hover { border-color: var(--accent); box-shadow: 0 4px 20px var(--shadow); }
     .welcome-q {
       font-family: 'Cinzel Decorative', serif;
       font-size: 11px; letter-spacing: 0.1em;
@@ -1403,16 +1373,12 @@
     .welcome-a {
       font-family: 'Noto Serif SC', serif;
       font-size: 14px; color: var(--text-secondary);
-      line-height: 1.85;
-      padding-left: 30px;
+      line-height: 1.85; padding-left: 30px;
     }
-    .welcome-a em {
-      color: var(--accent); font-style: normal; font-weight: 600;
-    }
+    .welcome-a em { color: var(--accent); font-style: normal; font-weight: 600; }
     .welcome-enter-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; margin-top: 32px;
-      padding: 14px 0; border-radius: 50px;
+      width: 100%; margin-top: 32px; padding: 14px 0; border-radius: 50px;
       background: linear-gradient(135deg, var(--accent-dark), var(--accent));
       color: #fff; border: none; cursor: pointer;
       font-family: 'Cinzel Decorative', serif;
@@ -1420,21 +1386,16 @@
       transition: all 0.3s ease;
       box-shadow: 0 8px 30px rgba(102,169,201,0.35);
     }
-    .welcome-enter-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 40px rgba(102,169,201,0.5);
-    }
+    .welcome-enter-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(102,169,201,0.5); }
     .welcome-close {
       position: absolute; top: 18px; right: 18px;
       background: none; border: none; cursor: pointer;
       color: var(--text-muted); font-size: 20px;
       width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      transition: color 0.2s, background 0.2s;
-      z-index: 2;
+      transition: color 0.2s, background 0.2s; z-index: 2;
     }
     .welcome-close:hover { color: var(--accent); background: var(--accent-glow); }
-
     @media (max-width: 540px) {
       .welcome-modal-body { padding: 28px 22px 32px; }
       .welcome-modal-title { font-size: 15px; }
@@ -1445,7 +1406,7 @@
 
 <div id="app">
 
-  <!-- ===== Welcome Modal ===== -->
+  <!-- ===== 歡迎彈窗 ===== -->
   <div class="welcome-backdrop" :class="{ open: welcomeOpen }">
     <div class="welcome-modal">
       <div class="welcome-modal-deco"></div>
@@ -1454,57 +1415,38 @@
         <span class="welcome-modal-icon">✦</span>
         <div class="welcome-modal-title">Remnants of Destiny</div>
         <div class="welcome-modal-subtitle">命 運 的 靜 物 詩 · 歡迎來訪</div>
-
         <div class="welcome-qa-list">
           <div class="welcome-qa">
             <div class="welcome-q">這個網站是做什麼的？</div>
-            <div class="welcome-a">
-              這是一個介紹oc的網站。你可以在這裡認識
-              <em>斯洛特拉</em>、<em>仸萊爾</em>、<em>艾拉雅</em>等角色，
-              並且閱讀他們的故事，以及他們所在的世界。
-            </div>
+            <div class="welcome-a">這是一個介紹oc的網站。你可以在這裡認識 <em>斯洛特拉</em>、<em>仸萊爾</em>、<em>艾拉雅</em> 等角色，閱讀她們的背景故事、性格特徵，以及彼此之間的關係。</div>
           </div>
-
           <div class="welcome-qa">
             <div class="welcome-q">什麼是 OC？</div>
-            <div class="welcome-a">
-              <em>OC</em> 是 <em>Original Character</em> 的縮寫，
-              意思是「原創角色」。這些是設計者自己構思、設計的人物，
-              擁有獨特的外貌、性格與故事，並非來自任何已有的作品。
-            </div>
+            <div class="welcome-a"><em>OC</em> 是 <em>Original Character</em> 的縮寫，意思是「原創角色」。這些是設計者自己構思、設計的人物，擁有獨特的外貌、性格與故事，並非來自任何已有的作品。</div>
           </div>
-
           <div class="welcome-qa">
             <div class="welcome-q">這個故事講述什麼？</div>
-            <div class="welcome-a">
-              故事圍繞著一個名為 <em>斯洛特拉</em> 的孩子所展開——
-              這是一首關於 <em>苦難、羈絆與存在意義</em> 的詩篇。
-            </div>
+            <div class="welcome-a">故事圍繞著一個名為 <em>斯洛特拉</em> 的孩子展開——這是一首關於 <em>苦難、羈絆與存在意義</em> 的詩篇。</div>
           </div>
-
           <div class="welcome-qa">
             <div class="welcome-q">要怎麼瀏覽這個網站？</div>
             <div class="welcome-a">
-              往下滑可以看到不同區塊能夠點擊進入，或者直接點擊左上角的 <em>目錄按鈕</em> 可以打開側邊欄，
-              從中選擇不同區塊開始探索。
-              建議閱讀順序為：<em>一切的起源</em> → <em>角色介紹</em> → <em>世界觀設定</em> → <em>探索她的故事</em>(由上到下，由左到右)。
-              祝你旅途愉快 ✦
-            </div>
+              1.往下滑可以看到不同區塊，能夠直接點擊進入。<br>
+              建議閱讀順序為：一切的起源 → 角色介紹 → 世界觀設定 → 探索她的故事(由上到下，由左到右)。<br><br>
+              點擊左上角的 <em>目錄按鈕</em>  可以打開側邊欄，從中選擇任一區塊開始探索(建議按照目錄順序)。<br><br>
+              以上兩種方式都是一樣的，祝您旅途愉快 ✦</div>
           </div>
         </div>
-
-        <button class="welcome-enter-btn" @click="welcomeOpen = false">
-          ✦ &nbsp; 進入命運的靜物詩
-        </button>
+        <button class="welcome-enter-btn" @click="welcomeOpen = false">✦ &nbsp; 進入命運的靜物詩</button>
       </div>
     </div>
   </div>
-  <!-- ===================== HOME PAGE ===================== -->
+  <!-- ===================== 首頁 ===================== -->
   <template v-if="currentPage === 'home'">
-    <!-- Sidebar Backdrop -->
+    <!-- 遮罩背景 -->
     <div class="sidebar-backdrop" :class="{ active: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-    <!-- Sidebar -->
+    <!-- 側邊目錄 -->
     <aside class="sidebar" :class="{ open: sidebarOpen }">
   <div class="sidebar-header">
     <div class="sidebar-logo">Remnants of Destiny</div>
@@ -1531,8 +1473,8 @@
 
     <div style="margin-top: 20px"></div>
     <div class="nav-section-title">主要故事</div>
-    <a class="nav-item" @click="openStoryHub(); subSidebarOpen = false"> <span class="nav-icon">✨</span> 探索她的故事</a>
-   <a class="nav-item" @click="worldsModalOpen = true; subSidebarOpen = false"> <span class="nav-icon">🌍</span> 前往其他小世界</a>
+    <a class="nav-item" @click="openStoryHub(); sidebarOpen = false"> <span class="nav-icon">✨</span> 探索她的故事</a>
+   <a class="nav-item" @click="worldsModalOpen = true; sidebarOpen = false"> <span class="nav-icon">🌍</span> 前往其他小世界</a>
     </div>
   </nav>
   <div class="sidebar-footer">
@@ -1540,7 +1482,7 @@
   </div>
 </aside>
 
-    <!-- Topbar -->
+    <!-- 頂部導覽列 -->
     <header class="topbar">
       <button class="topbar-menu-btn" @click="sidebarOpen = true" title="打開目錄">
         <span></span><span></span><span></span>
@@ -1548,9 +1490,9 @@
       <div class="topbar-title">目錄</div>
     </header>
 
-    <!-- Main -->
+    <!-- 主內容區 -->
     <main class="main">
-      <!-- Hero Carousel -->
+      <!-- 首頁輪播圖 -->
       <section class="hero" id="hero">
         <div class="carousel-slides">
           <div
@@ -1589,7 +1531,7 @@
         </div>
       </section>
 
-      <!-- Story Section -->
+      <!-- 引言區塊 -->
      <section class="story-section" id="story">
   <div class="container" style="text-align: center;"> <div class="fade-in">
       <div class="section-eyebrow">Introduction</div>
@@ -1623,21 +1565,13 @@
     </div>
   </section>
 
-      <!-- Articles Section -->
+      <!-- 文章卡片區 -->
      <section class="articles-section" id="articles">
   <div class="container">
     
     <div class="articles-grid">
       <div
-        v-if="filteredArticles.length === 0"
-        class="no-results"
-      >
-        <div class="no-results-icon">🔎</div>
-        <div class="no-results-text">未找到相關文章</div>
-      </div>
-
-      <div
-        v-for="(article, i) in filteredArticles"
+        v-for="(article, i) in articles"
         :key="article.id"
         class="article-card fade-in"
         :style="{ transitionDelay: `${i * 0.07}s` }"
@@ -1660,7 +1594,7 @@
       </div>
     </div>
   </div>
-  <!-- Extra buttons below the three sections -->
+  <!-- 區塊底部按鈕群 -->
   <div class="section-extra-btns">
     <button class="section-extra-btn primary" @click="openStoryHub">
       ✦ 探索她的故事
@@ -1688,12 +1622,12 @@
     </button>
   </template>
 
-  <!-- ===================== SUB PAGES ===================== -->
+  <!-- ===================== 子頁面 ===================== -->
   <template v-else-if="currentPage === 'origin' || currentPage === 'character' || currentPage === 'char-detail' || currentPage === 'worldview' || currentPage === 'story-hub'">
-    <!-- Sub-page Sidebar Backdrop -->
+    <!-- 子頁面遮罩背景 -->
     <div class="sidebar-backdrop" :class="{ active: subSidebarOpen }" @click="subSidebarOpen = false"></div>
 
-    <!-- Sub-page Sidebar -->
+    <!-- 子頁面側邊目錄 -->
     <aside class="sidebar" :class="{ open: subSidebarOpen }">
       <div class="sidebar-header">
         <div class="sidebar-logo">Remnants of Destiny</div>
@@ -1719,10 +1653,10 @@
 
            <div style="margin-top: 20px"></div>
     <div class="nav-section-title">主要故事</div>
-    <a class="nav-item" @click="openStoryHub(); sidebarOpen = false">
+    <a class="nav-item" @click="openStoryHub(); subSidebarOpen = false">
       <span class="nav-icon">✨</span> 探索她的故事
     </a>
-    <a class="nav-item" @click="worldsModalOpen = true; sidebarOpen = false">
+    <a class="nav-item" @click="worldsModalOpen = true; subSidebarOpen = false">
     <span class="nav-icon">🌍</span> 前往其他小世界
   </a>
         </div>
@@ -1732,13 +1666,13 @@
       </div>
     </aside>
 
-    <!-- Sub-page Top-left Menu Button (hidden when sidebar open) -->
+    <!-- 子頁面左上角目錄按鈕 -->
     <button class="subpage-top-btn" @click="subSidebarOpen = true" v-show="!subSidebarOpen">
       <div class="subpage-menu-bars"><span></span><span></span><span></span></div>
       目錄
     </button>
 
-    <!-- ===== ORIGIN PAGE ===== -->
+    <!-- ===== 一切的起源 頁面 ===== -->
 <div v-if="currentPage === 'origin'">
   <div class="subpage-hero loaded">
     <div class="subpage-hero-bg" style="background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat;"></div>
@@ -1841,7 +1775,7 @@
   </footer>
 </div>
 
-    <!-- ===== CHARACTER PAGE ===== -->
+    <!-- ===== 角色介紹 頁面 ===== -->
     <div v-if="currentPage === 'character'">
       <div class="subpage-hero loaded">
         <div class="subpage-hero-bg" style="background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(https://cdn.phototourl.com/free/2026-04-09-5c8f6fdd-7d77-4d6e-98f3-019b336fd757.jpg) center/cover no-repeat;"></div>
@@ -1859,7 +1793,7 @@
     <div class="char-grid">
 
       <div class="char-profile-card" @click="openCharDetail('snotra')">
-        <div class="char-profile-img" style="background: linear-gradient(135deg, #0a1628, #2d6891);">🐦‍⬛</div>
+        <div class="char-profile-img" style="background: url('https://cdn.phototourl.com/free/2026-05-07-37f524fb-01db-4361-b9af-ed0501e9c228.jpg') center/cover no-repeat;"></div>
         <div class="char-profile-body">
           <div class="char-profile-name">斯洛特拉 · Snotra</div>
           <div class="char-profile-role">渡鴉小姐 · 寶石收藏家 · 最後的巴別塔</div>
@@ -1920,7 +1854,7 @@
       </footer>
     </div>
 
-    <!-- ===== CHARACTER DETAIL PAGE ===== -->
+    <!-- ===== 角色詳細介紹 頁面 ===== -->
     <div v-if="currentPage === 'char-detail' && currentChar">
       <div class="char-detail-page">
         <button class="char-detail-back" @click="currentPage = 'character'; window.scrollTo({top:0,behavior:'instant'})">
@@ -1966,7 +1900,7 @@
               <span class="char-trait" v-for="trait in currentChar.traits" :key="trait">{{ trait }}</span>
             </div>
             <div class="char-detail-text" style="margin-top:20px">
-              <p v-for="(para, i) in currentChar.personality" :key="i">{{ para }}</p>
+              <p v-for="(para, i) in currentChar.personality" :key="i" v-html="para"></p>
             </div>
           </div>
 
@@ -2002,7 +1936,7 @@
       </div>
     </div>
 
-    <!-- ===== WORLDVIEW PAGE ===== -->
+    <!-- ===== 世界觀設定 頁面 ===== -->
     <div v-if="currentPage === 'worldview'">
       <div class="subpage-hero loaded">
         <div class="subpage-hero-bg" style="background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(https://cdn.phototourl.com/free/2026-04-09-fd5e6c1c-675b-48b6-b175-8493aae4ba84.jpg) center/cover no-repeat;"></div>
@@ -2078,7 +2012,7 @@
     </div>
   </template>
 
-  <!-- ===== STORY HUB PAGE (探索她的故事) ===== -->
+  <!-- ===== 探索她的故事 頁面 ===== -->
   <template v-if="currentPage === 'story-hub'">
     <div class="story-hub-page">
       <div class="story-hub-hero">
@@ -2114,7 +2048,7 @@
     </div>
   </template>
 
-  <!-- ===== ARC CHAPTER LIST PAGE ===== -->
+  <!-- ===== 故事章節列表 頁面 ===== -->
   <template v-if="currentPage === 'arc-list'">
     <div class="arc-list-page">
       <button class="arc-list-back" @click="currentPage = 'story-hub'; window.scrollTo({top:0,behavior:'instant'})">
@@ -2160,7 +2094,7 @@
     </div>
   </template>
 
-  <!-- ===== CHAPTER READER PAGE ===== -->
+  <!-- ===== 章節閱讀器 頁面 ===== -->
    <template v-if="currentPage === 'chapter-reader'">
   <div class="reader-page" v-if="currentArc && currentChapterIndex !== null">
     
@@ -2219,7 +2153,7 @@
   </div>
 </template>
 
-  <!-- ===== TOC MODAL (Chapter List Popup in Reader) ===== -->
+  <!-- ===== 章節目錄彈窗（閱讀器內） ===== -->
   <div class="toc-modal-bg" :class="{ open: tocModalOpen }" @click.self="tocModalOpen = false">
     <div class="toc-modal">
       <button class="toc-modal-close" @click="tocModalOpen = false">✕</button>
@@ -2255,10 +2189,10 @@
     </div>
   </div>
 
-  <!-- ===== STORY WORLD PAGE ===== -->
+  <!-- ===== 小世界故事 頁面 ===== -->
   <template v-if="currentPage === 'story-world'">
     <div class="story-world-page">
-      <!-- Back button only (no sidebar/menu) -->
+      <!-- 只有返回按鈕，無側邊欄 -->
       <button class="story-world-back" @click="goBack">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
@@ -2266,7 +2200,7 @@
         返回上一頁
       </button>
 
-      <!-- Hero image -->
+      <!-- 大圖標題 -->
       <div class="story-world-hero">
         <div class="story-world-hero-bg" :style="{ background: currentWorld ? currentWorld.heroBg : '' }"></div>
         <div class="story-world-hero-gradient"></div>
@@ -2277,7 +2211,7 @@
         </div>
       </div>
 
-      <!-- Story content -->
+      <!-- 故事內文 -->
       <div class="story-world-body">
         <div class="story-world-text" v-if="currentWorld">
           <p v-for="(para, i) in currentWorld.story" :key="i">{{ para }}</p>
@@ -2299,38 +2233,36 @@ const { createApp, ref, computed, onMounted, onUnmounted, watch } = Vue;
 
 createApp({
   setup() {
-    // ===== Page routing =====
+    // ===== 頁面路由 =====
     const currentPage = ref('home'); // 'home' | 'origin' | 'character' | 'worldview' | 'story-world'
     const previousPage = ref('home');
 
     function openPage(articleId) {
       const map = { 1: 'origin', 2: 'character', 3: 'worldview' };
-      previousPage.value = currentPage.value;
       currentPage.value = map[articleId] || 'home';
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function goHome() {
-      previousPage.value = currentPage.value;
       currentPage.value = 'home';
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function goBack() {
-      // When leaving a story-world page, go home and reopen the worlds modal
+      // 離開小世界頁面時，返回首頁並重新打開小世界彈窗
       currentPage.value = 'home';
       window.scrollTo({ top: 0, behavior: 'instant' });
-      // Small delay so the home page renders before modal opens
+      // 稍微延遲，等首頁渲染完成後再開啟彈窗
       setTimeout(() => { worldsModalOpen.value = true; }, 80);
     }
 
-    // ===== Sub-page sidebar =====
+    // ===== 子側邊欄狀態 =====
     const subSidebarOpen = ref(false);
 
-    // ===== TOC Modal (Reader) =====
+    // ===== 章節目錄彈窗 =====
     const tocModalOpen = ref(false);
 
-    // ===== Small worlds =====
+    // ===== 其他小世界 =====
     const worldsModalOpen = ref(false);
     const currentWorld = ref(null);
 
@@ -2396,20 +2328,19 @@ createApp({
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    // ===== Story Hub =====
+    // ===== 故事中心 =====
     const currentArc = ref(null);
     const currentChapterIndex = ref(null);
 
-    // ===== Character Detail =====
+    // ===== 角色詳細介紹 =====
     const currentChar = ref(null);
     const characters = ref({
       snotra: {
         id: 'snotra',
         name: '斯洛特拉 · Snotra',
         role: '渡鴉小姐 · 寶石收藏家 · 最後的巴別塔',
-        avatarEmoji: '🌠',
-        avatarBg: 'linear-gradient(135deg, #0a1628, #2d6891)',
-        heroBg: 'linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)), url(https://cdn.phototourl.com/free/2026-04-09-0f05ec34-f3c5-4942-8b26-da63dbbf484a.jpg) center/cover no-repeat',
+        avatarBg: 'url(https://cdn.phototourl.com/free/2026-05-07-37f524fb-01db-4361-b9af-ed0501e9c228.jpg) center/cover no-repeat',
+        heroBg: 'linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url(https://cdn.phototourl.com/free/2026-05-07-37f524fb-01db-4361-b9af-ed0501e9c228.jpg) center/cover no-repeat',
         stats: [
           { label: '身分', value: '魔法世家小姐 · 寶石收藏家' },
           { label: '派系立場', value: 'Raven' },
@@ -2549,6 +2480,8 @@ createApp({
 
     function openStoryHub() {
       currentPage.value = 'story-hub';
+      sidebarOpen.value = false;
+      subSidebarOpen.value = false;
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
@@ -2612,7 +2545,7 @@ createApp({
       },
     ]);
 
-    // ===== Home page state =====
+    // ===== 首頁狀態 =====
     const welcomeOpen = ref(false);
     const showBackTop = ref(false);
     const sidebarOpen = ref(false);
@@ -2635,6 +2568,7 @@ createApp({
       setTimeout(() => sidebarOpen.value = false, 200);
     }
 
+    // ===== 首頁輪播圖 =====
     const currentSlide = ref(0);
     const slides = ref([
       {
@@ -2664,25 +2598,14 @@ createApp({
     function prevSlide() { currentSlide.value = (currentSlide.value - 1 + slides.value.length) % slides.value.length; }
     function goToSlide(i) { currentSlide.value = i; resetTimer(); }
 
-    // ===== Articles =====
+    // ===== 文章卡片 =====
     const articles = ref([
       { id: 1, title: '一切的起源', category: 'origin', excerpt: '過去存在於未來中，而未來亦在過去裡', emoji: '🌌', color: 'linear-gradient(135deg, #0a1628, #2d6891)', },
       { id: 2, title: '角色介紹', category: 'character', excerpt: '於千萬人之中，遇見你要遇見的人', emoji: '🌙', color: 'linear-gradient(135deg, #1a0d28, #6e2d8a)', },
       { id: 3, title: '世界觀設定', category: 'worldview', excerpt: '關於世界觀的運行規則', emoji: '🗺️', color: 'linear-gradient(135deg, #0d1f0d, #2d6e50)', },
     ]);
 
-    const activeTag = ref('');
-    const allTags = computed(() => {
-      const tags = new Set();
-      articles.value.forEach(a => (a.tags || []).forEach(t => tags.add(t)));
-      return Array.from(tags);
-    });
-    const filteredArticles = computed(() => {
-      return articles.value.filter(a => !activeTag.value || (a.tags || []).includes(activeTag.value));
-    });
-    function filterTag(tag) { activeTag.value = activeTag.value === tag ? '' : tag; }
-
-    // Re-init fade-ins when returning home
+    // 返回首頁時重新初始化進場動畫
     watch(currentPage, (val) => {
       if (val === 'home') {
         setTimeout(() => {
@@ -2703,13 +2626,12 @@ createApp({
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
       }, { threshold: 0.1 });
       els.forEach(el => obs.observe(el));
-      // Show welcome modal after a short delay
       setTimeout(() => { welcomeOpen.value = true; }, 400);
     });
 
     onUnmounted(() => {
       window.removeEventListener('scroll', handleScroll);
-      clearInterval(slideTimer);
+      clearInterval(slideTimer); // 清除輪播計時器
     });
 
     return {
@@ -2719,8 +2641,7 @@ createApp({
       sidebarOpen, subSidebarOpen, activeSection, navTo,
       currentSlide, slides,
       nextSlide, prevSlide, goToSlide,
-      articles, filteredArticles,
-      filterTag, allTags, activeTag,
+      articles,
       worldsModalOpen, smallWorlds, currentWorld, openWorld,
       storyArcs, currentArc, currentChapterIndex,
       openStoryHub, openArcList, openChapter,
